@@ -1,0 +1,105 @@
+{
+  "name": "signo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Open source, self hosted signing service with PKCS#11 support",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-esm --project ./tsconfig.json src/index.ts",
+    "build": "rimraf dist && tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "esw --color --ext .ts src",
+    "lint:fix": "esw --color --fix --ext .ts src",
+    "lint:watch": "esw --color --fix --watch --cache --ext .ts src",
+    "release": "standard-version",
+    "release:pre": "standard-version --prerelease"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gergof/signo.git"
+  },
+  "author": "Fandly Gergo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/gergof/signo/issues"
+  },
+  "homepage": "https://github.com/gergof/signo#readme",
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/http-errors": "^2.0.4",
+    "@types/node": "^20.10.5",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.0",
+    "eslint-watch": "^8.0.0",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
+    "standard-version": "^9.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@fastify/view": "^8.2.0",
+    "@sinclair/typebox": "^0.31.28",
+    "date-fns": "^3.0.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "env-var": "^7.4.1",
+    "fastify": "^4.25.1",
+    "http-errors": "^2.0.0",
+    "winston": "^3.11.0",
+    "yaml": "^2.3.4"
+  },
+  "standard-version": {
+    "scripts": {
+      "prerelease": "git fetch --all --tags"
+    },
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "imp",
+        "section": "Improvements"
+      },
+      {
+        "type": "ci",
+        "section": "Build/CI"
+      },
+      {
+        "type": "chore",
+        "hidden": true
+      },
+      {
+        "type": "docs",
+        "section": "Documentation"
+      },
+      {
+        "type": "refactor",
+        "section": "Refactor"
+      },
+      {
+        "type": "test",
+        "section": "Testing"
+      },
+      {
+        "type": "perf",
+        "section": "Performance"
+      },
+      {
+        "type": "intern",
+        "section": "Internal"
+      }
+    ]
+  }
+}
