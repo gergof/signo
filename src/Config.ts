@@ -1,4 +1,5 @@
-import fs from 'fs/promises';
+import fs from 'fs';
+import fsp from 'fs/promises';
 import path from 'path';
 
 import { Static, Type } from '@sinclair/typebox';
@@ -9,6 +10,7 @@ import validatorFactory from './utils/schemaValidator.js';
 
 const ConfigSchema = Type.Object({
 	https: Type.Object({
+		port: Type.Integer({ min: 1, max: 65535 }),
 		key: Type.String(),
 		cert: Type.String()
 	}),
@@ -42,7 +44,7 @@ class Config {
 			this.logger.debug(
 				`Loading configuration file contents from ${this.configFile}`
 			);
-			const contents = await fs.readFile(this.configFile);
+			const contents = await fsp.readFile(this.configFile);
 
 			this.logger.debug('Trying to parse configuration file');
 			let parsed: any = null;
@@ -82,12 +84,28 @@ class Config {
 		}
 	}
 
+	private getFilePath(filePath: string) {
+		if (path.isAbsolute(filePath)) {
+			return filePath;
+		}
+
+		return path.join(path.dirname(path.resolve(this.configFile)), filePath);
+	}
+
 	get https() {
 		if (!this.config) {
 			throw new Error('Config not initialized');
 		}
 
-		return this.config.https;
+		return {
+			...this.config.https,
+			key: fs
+				.readFileSync(this.getFilePath(this.config.https.key))
+				.toString('utf-8'),
+			cert: fs
+				.readFileSync(this.getFilePath(this.config.https.cert))
+				.toString('utf-8')
+		};
 	}
 
 	get database() {

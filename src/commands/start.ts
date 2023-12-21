@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import Config from '../Config.js';
 import createDataSource from '../DataSource.js';
 import Logger from '../Logger.js';
+import WebServer from '../WebServer.js';
 
 interface StartOptions {
 	config: string;
@@ -18,7 +19,8 @@ const start = async (cmd: Command, options: StartOptions) => {
 	const loggerFactory = new Logger({
 		level: commonOpts.logLevel,
 		format: commonOpts.logFormat,
-		file: commonOpts.logFile
+		file: commonOpts.logFile,
+		cryptoFile: commonOpts.cryptoLogFile
 	});
 
 	const logger = loggerFactory.createLogger('main');
@@ -42,9 +44,18 @@ const start = async (cmd: Command, options: StartOptions) => {
 		logger.info('Synchronizing database schema');
 		await datasource.synchronize();
 
+		const webServer = new WebServer(
+			loggerFactory.createLogger('server'),
+			config.https,
+			datasource
+		);
+		await webServer.initialize();
+
 		// add exit handlers
 		const exit = async () => {
 			logger.info('Stopping Signo server');
+
+			await webServer.destroy();
 
 			logger.info('Destroying datasource');
 			await datasource.destroy();

@@ -10,7 +10,7 @@ const main = () => {
 	program
 		.addOption(
 			new Option('--log-level <level>', 'log level')
-				.choices(['debug', 'info', 'warn', 'error'])
+				.choices(['debug', 'info', 'warn', 'error', 'crypto'])
 				.default('info')
 		)
 		.addOption(
@@ -21,6 +21,12 @@ const main = () => {
 		.addOption(
 			new Option('--log-file <file>', 'rotated log file name').default(
 				'signo.log'
+			)
+		)
+		.addOption(
+			new Option(
+				'--crypto-log-file <file>',
+				'optional file to contain only the crypto log'
 			)
 		);
 

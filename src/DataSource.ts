@@ -21,10 +21,8 @@ const createDataSource = (config: DataSourceConfig) => {
 		password: config.password,
 		database: config.database,
 		logging: false,
-		entities: Object.entries(models).map(model => model[1]),
-		migrations: Object.entries(migrations).map(
-			migration => migration[1]
-		) as any,
+		entities: Object.values(models),
+		migrations: Object.values(migrations),
 		subscribers: []
 	});
 };

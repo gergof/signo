@@ -4,6 +4,7 @@ interface LogConfig {
 	level: string;
 	format: string;
 	file: string;
+	cryptoFile?: string;
 }
 
 class Logger {
@@ -12,6 +13,7 @@ class Logger {
 	constructor(config: LogConfig) {
 		this.winston = Winston.createLogger({
 			level: config.level,
+			levels: Object.assign({ crypto: 0 }, Winston.config.syslog.levels),
 			format:
 				config.format == 'json'
 					? Winston.format.combine(
@@ -56,7 +58,15 @@ class Logger {
 					maxsize: 10485760,
 					maxFiles: 50,
 					tailable: true
-				})
+				}),
+				...(config.cryptoFile
+					? [
+							new Winston.transports.File({
+								filename: config.cryptoFile,
+								level: 'crypto'
+							})
+						]
+					: [])
 			]
 		});
 	}

@@ -1,4 +1,5 @@
 https:
+  port: 3000
   key: localhost.key
   cert: localhost.crt
 database:
