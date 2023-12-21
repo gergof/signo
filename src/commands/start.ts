@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 
 import Config from '../Config.js';
-import createDataSource from '../DataSource.js';
+import Database from '../Database.js';
 import Logger from '../Logger.js';
 import WebServer from '../WebServer.js';
 
@@ -34,20 +34,16 @@ const start = async (cmd: Command, options: StartOptions) => {
 		);
 		await config.initialize();
 
-		logger.info('Initializing datasource');
-		const datasource = createDataSource(config.database);
-		await datasource.initialize();
-
-		logger.info('Running migrations');
-		await datasource.runMigrations();
-
-		logger.info('Synchronizing database schema');
-		await datasource.synchronize();
+		const database = new Database(
+			loggerFactory.createLogger('db'),
+			config.database
+		);
+		await database.initialize();
 
 		const webServer = new WebServer(
 			loggerFactory.createLogger('server'),
 			config.https,
-			datasource
+			database.orm
 		);
 		await webServer.initialize();
 
@@ -56,9 +52,7 @@ const start = async (cmd: Command, options: StartOptions) => {
 			logger.info('Stopping Signo server');
 
 			await webServer.destroy();
-
-			logger.info('Destroying datasource');
-			await datasource.destroy();
+			await database.destroy();
 
 			logger.info('Bye!');
 			process.exit(0);
