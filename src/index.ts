@@ -1,6 +1,17 @@
-import { Command, Option } from 'commander';
+import { Command, InvalidArgumentError, Option } from 'commander';
 
+import generateSecret from './commands/generate-secret.js';
 import start from './commands/start.js';
+
+const validateInt = (value: any) => {
+	const parsed = parseInt(value);
+
+	if (isNaN(parsed)) {
+		throw new InvalidArgumentError('Not a number');
+	}
+
+	return parsed;
+};
 
 const main = () => {
 	const program = new Command();
@@ -40,6 +51,20 @@ const main = () => {
 		)
 		.action((options, cmd) => {
 			start(cmd, options);
+		});
+
+	program
+		.command('generate-secret')
+		.description('generate secret for http sessions')
+		.option(
+			'-b, --bytes <number>',
+			'length of secret in bytes',
+			validateInt,
+			64
+		)
+		.option('-s, --silent', 'only output the generated secret', false)
+		.action((options, cmd) => {
+			generateSecret(cmd, options);
 		});
 
 	program.parse();

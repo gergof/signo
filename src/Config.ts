@@ -12,7 +12,8 @@ const ConfigSchema = Type.Object({
 	https: Type.Object({
 		port: Type.Integer({ min: 1, max: 65535 }),
 		key: Type.String(),
-		cert: Type.String()
+		cert: Type.String(),
+		secret: Type.String()
 	}),
 	database: Type.Object({
 		host: Type.String(),

@@ -1,20 +1,26 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import FastifyCookie from '@fastify/cookie';
+import FastifySession from '@fastify/session';
 import FastifyStatic from '@fastify/static';
 import FastifyView from '@fastify/view';
+import { TypeormStore } from 'connect-typeorm';
 import Ejs from 'ejs';
 import Fastify from 'fastify';
 import _ from 'lodash';
 import { DataSource } from 'typeorm';
 
 import { ChildLogger } from './Logger.js';
+import Session from './models/Session.js';
 import * as routes from './routes/index.js';
+import { MINUTE } from './utils/time.js';
 
 interface WebServerConfig {
 	port: number;
 	key: string;
 	cert: string;
+	secret: string;
 }
 
 class WebServer {
@@ -58,6 +64,21 @@ class WebServer {
 				'static'
 			),
 			prefix: '/static/'
+		});
+		this.fastify.register(FastifyCookie);
+		this.fastify.register(FastifySession, {
+			secret: this.config.secret,
+			cookie: {
+				maxAge: 15 * MINUTE
+			},
+			store: new TypeormStore({
+				cleanupLimit: 5,
+				limitSubquery: false,
+				onError: (store, error) => {
+					this.logger.warn('Session error: ' + error.toString());
+				}
+			}).connect(this.datasource.getRepository(Session)),
+			rolling: true
 		});
 	}
 

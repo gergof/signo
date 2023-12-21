@@ -2,6 +2,7 @@ https:
   port: 3000
   key: localhost.key
   cert: localhost.crt
+  secret: "Z/prLyfRKQ2NRMUy2gR1u3pcEeuj01fMAjcAQt+/QmHatlRaEHVaZy8h4z5Mv4/xf92bd8HPvWz1LzL/twqrAA=="
 database:
   host: localhost
   port: 3306

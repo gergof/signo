@@ -1,0 +1,37 @@
+:root {
+	--bg: #ABABAB;
+}
+
+body {
+	margin: 0;
+}
+
+p {
+	margin: 0;
+}
+
+.header {
+	padding: 8px;
+	background-color: var(--bg);
+	display: flex;
+	align-items: center;
+}
+
+.header .logo {
+	margin-right: 8px;
+	height: 22px;
+	width: 22px;
+}
+
+.header .title {
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: 0.8px;
+	margin-right: 8px;
+}
+
+.header .slogan {
+	font-size: 16px;
+	flex-grow: 1;
+}
+
