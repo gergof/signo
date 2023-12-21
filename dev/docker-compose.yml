@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mysql:
+    image: "mysql:8.0.30"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "signo"
+      MYSQL_PASSWORD: "signo"
+      MYSQL_DATABASE: "signo"
+    command: --default-authentication-plugin=mysql_native_password

@@ -1,0 +1,11 @@
+https:
+  key: localhost.key
+  cert: localhost.crt
+database:
+  host: localhost
+  port: 3306
+  database: signo
+  user: signo
+  password: signo
+pkcs11Modules:
+  - /usr/local/lib/libykcs11.so

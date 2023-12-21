@@ -1,5 +1,4 @@
 node_modules
-.env
 .eslintcache
 dist
-*.sqlite
+signo.log*
