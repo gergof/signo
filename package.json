@@ -29,10 +29,12 @@
   },
   "homepage": "https://github.com/gergof/signo#readme",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/ejs": "^3.1.5",
     "@types/http-errors": "^2.0.4",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.5",
+    "@types/owasp-password-strength-test": "^1.3.2",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
@@ -49,6 +51,7 @@
   },
   "dependencies": {
     "@fastify/cookie": "^9.2.0",
+    "@fastify/formbody": "^7.4.0",
     "@fastify/session": "^10.7.0",
     "@fastify/static": "^6.12.0",
     "@fastify/view": "^8.2.0",
@@ -62,6 +65,7 @@
     "http-errors": "^2.0.0",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
+    "owasp-password-strength-test": "^1.3.0",
     "reflect-metadata": "^0.2.1",
     "typeorm": "^0.3.17",
     "winston": "^3.11.0",

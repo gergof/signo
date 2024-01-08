@@ -1,0 +1,19 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST">
+	<fieldset>
+		<legend>Add User</legend>
+		<label for="username">Username:</label>
+		<input class="field" id="username" type="text" name="username" value="<%= typeof values != 'undefined' ? values.username : '' %>" />
+		<label for="name">Name:</label>
+		<input class="field" id="name" type="text" name="name" value="<%= typeof values != 'undefined' ? values.name : '' %>" />
+		<label for="password">Password:</label>
+		<input class="field" id="password" type="password" name="password" value="<%= typeof values != 'undefined' ? values.password : '' %>" />
+		<label for="passwordConf">Password confirmation:</label>
+		<input class="field" id="passwordConf" type="password" name="passwordConf" value="<%= typeof values != 'undefined' ? values.passwordConf : '' %>" />
+		<input type="submit" value="Create" />
+	</fieldset>
+</form>
+<%- include('foot') -%>

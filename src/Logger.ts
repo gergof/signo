@@ -35,10 +35,12 @@ class Logger {
 									.map(
 										key =>
 											`\t> ${key.padEnd(15, ' ')} - ${
-												extra[key] instanceof Object ||
-												extra[key] instanceof Array
+												typeof extra[key] == 'object'
 													? JSON.stringify(extra[key])
-													: extra[key]
+													: typeof extra[key] ==
+														  'function'
+														? '<function>'
+														: extra[key]
 											}`
 									)
 									.join('\n');

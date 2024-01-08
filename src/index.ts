@@ -1,6 +1,7 @@
 import { Command, InvalidArgumentError, Option } from 'commander';
 
 import generateSecret from './commands/generate-secret.js';
+import hash from './commands/hash.js';
 import start from './commands/start.js';
 
 const validateInt = (value: any) => {
@@ -65,6 +66,15 @@ const main = () => {
 		.option('-s, --silent', 'only output the generated secret', false)
 		.action((options, cmd) => {
 			generateSecret(cmd, options);
+		});
+
+	program
+		.command('hash')
+		.description('Hash an input password')
+		.option('-s, --silent', 'only output the hash', false)
+		.arguments('<password>')
+		.action((password, options, cmd) => {
+			hash(cmd, { ...options, password });
 		});
 
 	program.parse();

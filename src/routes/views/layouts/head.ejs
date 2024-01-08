@@ -13,3 +13,21 @@
 			<p class="title">Signo</p>
 			<p class="slogan">Signing service with PKCS#11 support</p>
 		</div>
+		<div class="menu">
+			<div class="pages">
+				<% if(user) { %>
+					<a class="page" href="/users">Users</a>
+					<a class="page" href="/tokens">Tokens</a>
+					<a class="page" href="/engines">Signing Engines</a>
+					<a class="page" href="/signees">Signees</a>
+				<% } %>
+			</div>
+			<div class="account">
+				<% if(user) { %>
+					<p>Signed in as <span class="username"><%= user.name %></span></p>
+					<a href="/auth/logout">Log out</a>
+				<% } else { %>
+					<a href="/auth/login">Login</a>
+				<% } %>
+			</div>
+		</div>

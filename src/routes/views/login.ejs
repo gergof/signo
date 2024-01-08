@@ -1,0 +1,17 @@
+<%- include('layouts/head', {title: 'Log in', user}) -%>
+<div class="login">
+	<% if(typeof error != 'undefined') { %>
+		<p class="error"><%= error %></p>
+	<% } %>
+	<form class="form" method="POST">
+		<fieldset>
+			<legend>Log in</legend>
+			<label for="username">Username:</label>
+			<input class="field" id="username" type="text" name="username" />
+			<label for="password">Password:</label>
+			<input class="field" id="password" type="password" name="password" />
+			<input type="submit" value="Log in" />
+		</fieldset>
+	</form>
+</div>
+<%- include('layouts/foot') -%>

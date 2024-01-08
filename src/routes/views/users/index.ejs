@@ -1,0 +1,35 @@
+<%- include('head', {user}) -%>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Username</th>
+		<th>Name</th>
+		<th>Active</th>
+		<th>Actions</th>
+	</tr>
+	<% for(const user of users) { %>
+		<tr>
+			<td><%= user.id %></td>
+			<td><%= user.username %></td>
+			<td><%= user.name %></td>
+			<td>
+				<% if(user.active) { %>
+					<div class="marker">
+						<div class="yes"></div>
+						<p>Yes</p>
+					</div>
+				<% } else { %>
+					<div class="marker">
+						<div class="no"></div>
+						<p>No</p>
+					</div>
+				<% } %>
+			</td>
+			<td>
+				<a href="/users/change-active/<%= user.id %>?active=<%= !user.active %>"><%= user.active ? 'Deactivate' : 'Activate' %></a>
+				<a href="/users/edit/<%= user.id %>">Edit</a>
+			</td>
+		</tr>
+	<% } %>
+</table>
+<%- include('foot') -%>

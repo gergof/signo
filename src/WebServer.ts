@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import FastifyCookie from '@fastify/cookie';
+import FastifyFormBody from '@fastify/formbody';
 import FastifySession from '@fastify/session';
 import FastifyStatic from '@fastify/static';
 import FastifyView from '@fastify/view';
@@ -21,6 +22,7 @@ interface WebServerConfig {
 	key: string;
 	cert: string;
 	secret: string;
+	adminPassword: string;
 }
 
 class WebServer {
@@ -80,6 +82,7 @@ class WebServer {
 			}).connect(this.datasource.getRepository(Session)),
 			rolling: true
 		});
+		this.fastify.register(FastifyFormBody);
 	}
 
 	private getFastifyLogger() {
@@ -122,7 +125,8 @@ class WebServer {
 		for (const route of Object.values(routes)) {
 			await this.fastify.register(route, {
 				logger: this.logger,
-				db: this.datasource
+				db: this.datasource,
+				adminPassword: this.config.adminPassword
 			});
 		}
 

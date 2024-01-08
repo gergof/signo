@@ -1,5 +1,11 @@
 :root {
 	--bg: #ABABAB;
+	--lightbg: #DDDDDD;
+
+	--error: #FF4444;
+	--ok: #44FF44;
+
+	--bold: 700;
 }
 
 body {
@@ -8,6 +14,33 @@ body {
 
 p {
 	margin: 0;
+	font-size: 14px;
+}
+
+h1 {
+	font-size: 24px;
+	margin-bottom: 16px;
+}
+
+table {
+	width: 100%;
+}
+
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 2px 4px;
+}
+
+th {
+	background-color: var(--lightbg);
+}
+
+input {
+	display: block;
 }
 
 .header {
@@ -35,3 +68,86 @@ p {
 	flex-grow: 1;
 }
 
+.menu {
+	background-color: var(--lightbg);
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+}
+
+.menu .pages {
+	display: flex;
+}
+
+.menu .pages .page {
+	margin-right: 16px;
+}
+
+.menu .account {
+	display: flex;
+	align-items: center;
+}
+
+.menu .account .username {
+	font-weight: var(--bold);
+	display: inline-block;
+	margin-right: 16px;
+}
+
+.login {
+	display: flex;
+	padding-top: 120px;
+	align-items: center;
+	flex-direction: column;
+}
+
+.login .form {
+	width: 360px;
+}
+
+.error {
+	color: var(--error);
+	margin-bottom: 24px;
+}
+
+.field {
+	width: min(100%, 300px);
+	margin-bottom: 8px;
+}
+
+.body {
+	padding: 8px;
+}
+
+.marker {
+	display: flex;
+	align-items: center;
+}
+
+.yes {
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	background-color: var(--ok);
+	margin-right: 4px;
+}
+
+.no {
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	background-color: var(--error);
+	margin-right: 4px;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.actions .action {
+	margin-right: 8px;
+}

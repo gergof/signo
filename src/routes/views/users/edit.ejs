@@ -1,0 +1,19 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST">
+	<fieldset>
+		<legend>Edit User</legend>
+		<label for="username">Username:</label>
+		<input class="field" id="username" type="text" name="username" value="<%= editUser.username %>" readonly />
+		<label for="name">Name:</label>
+		<input class="field" id="name" type="text" name="name" value="<%= editUser.name %>" />
+		<label for="password">Password (leave empty if unchanged):</label>
+		<input class="field" id="password" type="password" name="password"/>
+		<label for="passwordConf">Password confirmation (leave empty if unchanged):</label>
+		<input class="field" id="passwordConf" type="password" name="passwordConf" />
+		<input type="submit" value="Save" />
+	</fieldset>
+</form>
+<%- include('foot') -%>
