@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import Config from '../Config.js';
 import Database from '../Database.js';
 import Logger from '../Logger.js';
+import Tokens from '../Tokens.js';
 import WebServer from '../WebServer.js';
 
 interface StartOptions {
@@ -40,10 +41,17 @@ const start = async (cmd: Command, options: StartOptions) => {
 		);
 		await database.initialize();
 
+		const tokens = new Tokens(
+			loggerFactory.createLogger('pkcs11'),
+			config.pkcs11Modules
+		);
+		tokens.initialize();
+
 		const webServer = new WebServer(
 			loggerFactory.createLogger('server'),
 			config.https,
-			database.orm
+			database.orm,
+			tokens
 		);
 		await webServer.initialize();
 
@@ -52,6 +60,7 @@ const start = async (cmd: Command, options: StartOptions) => {
 			logger.info('Stopping Signo server');
 
 			await webServer.destroy();
+			tokens.destroy();
 			await database.destroy();
 
 			logger.info('Bye!');

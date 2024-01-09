@@ -23,7 +23,7 @@ const ConfigSchema = Type.Object({
 		user: Type.String(),
 		password: Type.String()
 	}),
-	pkcs11Modules: Type.Array(Type.String())
+	pkcs11Modules: Type.Record(Type.String(), Type.String())
 });
 
 type ConfigType = Static<typeof ConfigSchema>;

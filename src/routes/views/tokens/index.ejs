@@ -1,0 +1,40 @@
+<%- include('head', {user}) -%>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Description</th>
+		<th>Serial Number</th>
+		<th>Activated</th>
+		<th>Actions</th>
+	</tr>
+	<% for(const token of tokens) { %>
+		<tr>
+			<td>
+				<a href="/tokens/<%= encodeURI(token.id) %>"><%= token.id %></a>
+			</td>
+			<td><%= token.description %></td>
+			<td><%= token.serialNumber %></td>
+			<td>
+				<% if(token.activated) { %>
+					<div class="marker">
+						<div class="yes"></div>
+						<p>Activated</p>
+					</div>
+				<% } else { %>
+					<div class="marker">
+						<div class="no"></div>
+						<p>Inactive</p>
+					</div>
+				<% } %>
+			</td>
+			<td>
+				<% if(token.activated) { %>
+					<a href="/tokens/<%= token.id %>/deactivate">Deactivate</a>
+				<% } else { %>
+					<a href="/tokens/<%= token.id %>/activate">Activate</a>
+				<% } %>
+			</td>
+		</tr>
+	<% } %>
+</table>
+<%- include('foot') -%>

@@ -1,0 +1,111 @@
+<%- include('head', {user}) -%>
+<div class="tokenDetails">
+	<h2>Token <%= token.tokenId %></h2>
+	<h3>Token information</h3>
+	<div class="infoGrid">
+		<div>
+			<h4>Slot</h4>
+			<table>
+				<tr>
+					<td class="bold">Description</td>
+					<td><%= token.slot.description %></td>
+				</tr>
+				<tr>
+					<td class="bold">Manufacturer</td>
+					<td><%= token.slot.manufacturer %></td>
+				</tr>
+				<tr>
+					<td class="bold">Is Hardware</td>
+					<td><%= token.slot.isHardware ? 'Yes' : 'No' %></td>
+				</tr>
+				<tr>
+					<td class="bold">Is Removable</td>
+					<td><%= token.slot.isRemovable ? 'Yes' : 'No' %></td>
+				</tr>
+				<tr>
+					<td class="bold">Is Initialized</td>
+					<td><%= token.slot.isInitialized ? 'Yes' : 'No' %></td>
+				</tr>
+				<tr>
+					<td class="bold">Hardware Version</td>
+					<td><%= token.slot.hardwareVersion %></td>
+				</tr>
+				<tr>
+					<td class="bold">Firmware Version</td>
+					<td><%= token.slot.firmwareVersion %></td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h4>Token</h4>
+			<table>
+				<tr>
+					<td class="bold">Label</td>
+					<td><%= token.token.label %></td>
+				</tr>
+				<tr>
+					<td class="bold">Manufacturer</td>
+					<td><%= token.token.manufacturer %></td>
+				</tr>
+				<tr>
+					<td class="bold">Model</td>
+					<td><%= token.token.model %></td>
+				</tr>
+				<tr>
+					<td class="bold">Serial Number</td>
+					<td><%= token.token.serialNumber %></td>
+				</tr>
+				<tr>
+					<td class="bold">Sessions</td>
+					<td><%= token.token.sessionCount %>/<%= token.token.maxSessionCount %></td>
+				</tr>
+				<tr>
+					<td class="bold">R/W Sessions</td>
+					<td><%= token.token.rwSessionCount %>/<%= token.token.maxRwSessionCount %></td>
+				</tr>
+				<tr>
+					<td class="bold">PIN Length</td>
+					<td><%= token.token.minPinLength %>-<%= token.token.maxPinLength %></td>
+				</tr>
+				<tr>
+					<td class="bold">Free Public Memory</td>
+					<td><%= token.token.freePublicMemory %>/<%= token.token.totalPublicMemory %></td>
+				</tr>
+				<tr>
+					<td class="bold">Free Private Memory</td>
+					<td><%= token.token.freePrivateMemory %>/<%= token.token.totalPrivateMemory %></td>
+				</tr>
+				<tr>
+					<td class="bold">Hardware Version</td>
+					<td><%= token.token.hardwareVersion %></td>
+				</tr>
+				<tr>
+					<td class="bold">Firmware Version</td>
+					<td><%= token.token.firmwareVersion %></td>
+				</tr>
+				<tr>
+					<td class="bold">Internal Time (UTC)</td>
+					<td><%= token.token.utcTime !== null ? token.token.utcTime.toISOString() : 'N/A' %></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<h3>Keys</h3>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Type</th>
+			<th>Algorithm</th>
+			<th>Locally Generated</th>
+		</tr>
+		<% for(const key of token.keys) { %>
+			<tr>
+				<td><%= key.id %> (0x<%= key.id.toString(16) %>)</td>
+				<td><%= key.private ? 'Private' : 'Public' %></td>
+				<td><%= key.algo %></td>
+				<td><%= key.local ? 'Yes' : 'No' %></td>
+			</tr>
+		<% } %>
+	</table>
+</div>
+<%- include('foot') -%>

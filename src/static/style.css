@@ -22,6 +22,23 @@ h1 {
 	margin-bottom: 16px;
 }
 
+h2 {
+	font-size: 20px;
+	margin-bottom: 16px;
+}
+
+h3 {
+	font-size: 16px;
+	margin-bottom: 14px;
+}
+
+h4 {
+	font-size: 14px;
+	margin-bottom: 10px;
+	margin-top: 0;
+	font-weight: var(--bold);
+}
+
 table {
 	width: 100%;
 }
@@ -150,4 +167,18 @@ input {
 
 .actions .action {
 	margin-right: 8px;
+}
+
+.tokenDetails {
+}
+
+.tokenDetails .infoGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-column-gap: 16px;
+	padding: 0 16px;
+}
+
+.bold {
+	font-weight: var(--bold);
 }

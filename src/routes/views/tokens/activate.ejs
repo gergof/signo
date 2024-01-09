@@ -1,0 +1,13 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST">
+	<fieldset>
+		<legend>Activate token <%= tokenId %></legend>
+		<label for="pin">PIN:</label>
+		<input class="field" id="pin" type="password" name="pin" />
+		<input type="submit" value="Activate" />
+	</fieldset>
+</form>
+<%- include('foot') -%>

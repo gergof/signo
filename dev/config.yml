@@ -11,4 +11,4 @@ database:
   user: signo
   password: signo
 pkcs11Modules:
-  - /usr/local/lib/libykcs11.so
+  YKCS11: /usr/local/lib/libykcs11.so

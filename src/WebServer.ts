@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { DataSource } from 'typeorm';
 
 import { ChildLogger } from './Logger.js';
+import Tokens from './Tokens.js';
 import Session from './models/Session.js';
 import * as routes from './routes/index.js';
 import { MINUTE } from './utils/time.js';
@@ -31,17 +32,20 @@ class WebServer {
 
 	private fastify;
 	private datasource: DataSource;
+	private tokens: Tokens;
 
 	constructor(
 		logger: ChildLogger,
 		config: WebServerConfig,
-		datasource: DataSource
+		datasource: DataSource,
+		tokens: Tokens
 	) {
 		this.logger = logger;
 		this.config = config;
 		this.datasource = datasource;
+		this.tokens = tokens;
 
-		this.logger.info('Initializing WebServer');
+		this.logger.info('Creating WebServer instance and registering plugins');
 		this.fastify = Fastify({
 			logger: this.getFastifyLogger(),
 			https: {
@@ -74,10 +78,9 @@ class WebServer {
 				maxAge: 15 * MINUTE
 			},
 			store: new TypeormStore({
-				cleanupLimit: 5,
-				limitSubquery: false,
+				ttl: 15 * MINUTE,
 				onError: (store, error) => {
-					this.logger.warn('Session error: ' + error.toString());
+					this.logger.error('Session error: ' + error.toString());
 				}
 			}).connect(this.datasource.getRepository(Session)),
 			rolling: true
@@ -126,6 +129,7 @@ class WebServer {
 			await this.fastify.register(route, {
 				logger: this.logger,
 				db: this.datasource,
+				tokens: this.tokens,
 				adminPassword: this.config.adminPassword
 			});
 		}
