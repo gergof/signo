@@ -1,4 +1,5 @@
 import { Static, Type } from '@sinclair/typebox';
+import asn1 from 'asn1js';
 import * as pkcs11 from 'graphene-pk11';
 import httpErrors from 'http-errors';
 
@@ -116,6 +117,16 @@ const TokensRoute: Route = async (fastify, ctx) => {
 						private: key.constructor.name == 'PrivateKey',
 						algo: getKeyTypeString(key.type),
 						local: key.local
+					})),
+					certs: (
+						objs.filter(
+							obj => obj.constructor.name == 'X509Certificate'
+						) as pkcs11.X509Certificate[]
+					).map(cert => ({
+						id: cert.id.readInt8(),
+						serialNumber: cert.serialNumber,
+						issuer: asn1.fromBER(cert.issuer).result.toString(),
+						subject: asn1.fromBER(cert.subject).result.toString()
 					}))
 				}
 			});

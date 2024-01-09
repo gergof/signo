@@ -107,5 +107,26 @@
 			</tr>
 		<% } %>
 	</table>
+	<h3>X.509 Certificates</h3>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Serial Number</th>
+			<th>Issuer</th>
+			<th>Subject</th>
+		</tr>
+		<% for(const cert of token.certs) { %>
+			<tr>
+				<td><%= cert.id %> (0x<%= cert.id.toString(16) %>)</td>
+				<td><%= cert.serialNumber %></td>
+				<td>
+					<pre><%= cert.issuer %></pre>
+				</td>
+				<td>
+					<pre><%= cert.subject %></pre>
+				</td>
+			</tr>
+		<% } %>
+	</table>
 </div>
 <%- include('foot') -%>
