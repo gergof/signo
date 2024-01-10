@@ -1,0 +1,36 @@
+<%- include('head', {user}) -%>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Active</th>
+		<th>Actions</th>
+	</tr>
+	<% for(const signee of signees) { %>
+		<tr>
+			<td>
+				<a href="/signees/<%= encodeURI(signee.id) %>"><%= signee.id %></a>
+			</td>
+			<td><%= signee.name %></td>
+			<td>
+				<% if(signee.active) { %>
+					<div class="marker">
+						<div class="yes"></div>
+						<p>Yes</p>
+					</div>
+				<% } else { %>
+					<div class="marker">
+						<div class="no"></div>
+						<p>No</p>
+					</div>
+				<% } %>
+			</td>
+			<td>
+				<a href="/signees/<%= signee.id %>/change-active?active=<%= !signee.active %>"><%= signee.active ? 'Deactivate' : 'Activate' %></a>
+				<a href="/signees/<%= signee.id %>/edit">Edit</a>
+				<a href="/signees/<%= signee.id %>/rotate-secret">Rotate Secret</a>
+			</td>
+		</tr>
+	<% } %>
+</table>
+<%- include('foot') -%>

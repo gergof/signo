@@ -1,0 +1,13 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST">
+	<fieldset>
+		<legend>Edit Signee</legend>
+		<label for="name">Name:</label>
+		<input class="field" id="name" type="text" name="name" value="<%= signee.name %>" />
+		<input type="submit" value="Save" />
+	</fieldset>
+</form>
+<%- include('foot') -%>

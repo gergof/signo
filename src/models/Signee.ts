@@ -22,7 +22,7 @@ class Signee {
 	@Column('varchar', { length: 60 })
 	hmacSecret!: string;
 
-	@ManyToMany(() => Engine)
+	@ManyToMany(() => Engine, { eager: true })
 	@JoinTable()
 	engines!: Engine[];
 }

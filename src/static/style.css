@@ -195,3 +195,10 @@ input, select {
 .bold {
 	font-weight: var(--bold);
 }
+
+.secret {
+	margin: 16px;
+	padding: 8px;
+	background-color: var(--lightbg);
+	border-radius: 4px;
+}

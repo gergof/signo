@@ -1,0 +1,34 @@
+<%- include('head', {user}) -%>
+<h2>Signee <%= signee.name %> (<%= signee.id %>)</h2>
+<h3>Enabled Engines</h3>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Engine Name</th>
+		<th>Enabled</th>
+		<th>Actions</th>
+	</tr>
+	<% for(const engine of engines) { %>
+		<tr>
+			<td><%= engine.id %></td>
+			<td><%= engine.name %></td>
+			<td>
+				<% if(enabledEngines.includes(engine.id)) { %>
+					<div class="marker">
+						<div class="yes"></div>
+						<p>Yes</p>
+					</div>
+				<% } else { %>
+					<div class="marker">
+						<div class="no"></div>
+						<p>No</p>
+					</div>
+				<% } %>
+			</td>
+			<td>
+				<a href="/signees/<%= signee.id %>/edit-engine?engine=<%= engine.id %>&enabled=<%= !enabledEngines.includes(engine.id) %>"><%= enabledEngines.includes(engine.id) ? 'Disable' : 'Enable' %></a>
+			</td>
+		</tr>
+	<% } %>
+</table>
+<%- include('foot') -%>
