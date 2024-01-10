@@ -1,3 +1,4 @@
+export { default as Api } from './api.js';
 export { default as Auth } from './auth.js';
 export { default as Engines } from './engines.js';
 export { default as Root } from './root.js';

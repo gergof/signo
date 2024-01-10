@@ -2,6 +2,7 @@ import { Command, InvalidArgumentError, Option } from 'commander';
 
 import generateSecret from './commands/generate-secret.js';
 import hash from './commands/hash.js';
+import sign from './commands/sign.js';
 import start from './commands/start.js';
 
 const validateInt = (value: any) => {
@@ -75,6 +76,27 @@ const main = () => {
 		.arguments('<password>')
 		.action((password, options, cmd) => {
 			hash(cmd, { ...options, password });
+		});
+
+	program
+		.command('sign')
+		.description('Sign file using signo server')
+		.option(
+			'-s, --server <server>',
+			'endpoint of signo server',
+			'https://localhost:3000/'
+		)
+		.requiredOption('--client <client>', 'ID of signee')
+		.requiredOption('--secret <secret>', 'shared secret of signee')
+		.requiredOption('--engine <engine>', 'engine to use for signing')
+		.option(
+			'-o, --output <output>',
+			'save signature to file instead of outputting it as hex'
+		)
+		.option('--unsafe', 'accept any https certificate')
+		.arguments('<file>')
+		.action((file, options, cmd) => {
+			sign(cmd, { ...options, file });
 		});
 
 	program.parse();

@@ -13,6 +13,7 @@ import Fastify from 'fastify';
 import { DataSource } from 'typeorm';
 
 import { ChildLogger } from './Logger.js';
+import NonceValidator from './NoneValidator.js';
 import Tokens from './Tokens.js';
 import Session from './models/Session.js';
 import * as routes from './routes/index.js';
@@ -34,6 +35,8 @@ class WebServer {
 	private datasource: DataSource;
 	private tokens: Tokens;
 
+	private nonceValidator: NonceValidator;
+
 	constructor(
 		logger: ChildLogger,
 		config: WebServerConfig,
@@ -44,6 +47,8 @@ class WebServer {
 		this.config = config;
 		this.datasource = datasource;
 		this.tokens = tokens;
+
+		this.nonceValidator = new NonceValidator(300);
 
 		this.logger.info('Creating WebServer instance and registering plugins');
 		this.fastify = Fastify({
@@ -89,7 +94,7 @@ class WebServer {
 		this.fastify.register(FastifyMultipart, {
 			limits: {
 				files: 1,
-				fileSize: 100 * 1024 * 1024 // 100MiB
+				fileSize: 200 * 1024 * 1024 // 200 MiB
 			}
 		});
 	}
@@ -157,7 +162,8 @@ class WebServer {
 				logger: this.logger,
 				db: this.datasource,
 				tokens: this.tokens,
-				adminPassword: this.config.adminPassword
+				adminPassword: this.config.adminPassword,
+				nonceValidator: this.nonceValidator
 			});
 		}
 
