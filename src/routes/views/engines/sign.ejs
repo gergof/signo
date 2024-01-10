@@ -1,0 +1,13 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST" enctype="multipart/form-data">
+	<fieldset>
+		<legend>Sign with engine <%= engine.name %></legend>
+		<label for="file">File to sign:</label>
+		<input class="field" type="file" id="file" name="file" />
+		<input type="submit" value="Sign" />
+	</fieldset>
+</form>
+<%- include('foot') -%>

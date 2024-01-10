@@ -1,65 +1,9 @@
 import * as pkcs11 from 'graphene-pk11';
 
 import { ChildLogger } from './Logger.js';
-
-class TokenWrapper {
-	public readonly slot: pkcs11.Slot;
-
-	public readonly tokenId: string;
-
-	private pin: string;
-	private session: pkcs11.Session | null;
-
-	constructor(slot: pkcs11.Slot) {
-		this.slot = slot;
-
-		this.tokenId = `${this.slot.module.libName}.${
-			this.slot.getToken().serialNumber
-		}`;
-
-		this.pin = '';
-		this.session = null;
-	}
-
-	public isActivated() {
-		return !!this.pin;
-	}
-
-	public activate(pin: string) {
-		this.pin = pin;
-
-		if (this.session) {
-			// close active session so the next one will be authorized
-			this.session.close();
-			this.session = null;
-		}
-
-		try {
-			this.getSession();
-		} catch (e) {
-			this.pin = '';
-			throw e;
-		}
-	}
-
-	public deactivate() {
-		this.session?.close();
-		this.session = null;
-		this.pin = '';
-	}
-
-	public getSession() {
-		if (!this.session) {
-			this.session = this.slot.open();
-
-			if (this.pin) {
-				this.session.login(this.pin, pkcs11.UserType.USER);
-			}
-		}
-
-		return this.session;
-	}
-}
+import TokenWrapper from './TokenWrapper.js';
+import SigningEngine from './engines/SigningEngine.js';
+import SigningEngines, { SigningEngineType } from './engines/index.js';
 
 class Tokens {
 	private logger: ChildLogger;
@@ -106,7 +50,15 @@ class Tokens {
 
 		for (const mod of this.modules.values()) {
 			this.logger.debug(`Finalizing module ${mod.libName}`);
-			mod.finalize();
+			try {
+				mod.finalize();
+			} catch (e: any) {
+				this.logger.log({
+					message: `Failed to finalize module ${mod.libName}`,
+					level: 'warn',
+					err: e?.toString() || e?.message || 'Unknown error'
+				});
+			}
 		}
 	}
 
@@ -134,12 +86,37 @@ class Tokens {
 		}
 	}
 
+	public getTokenIds() {
+		return Array.from(this.tokens.keys());
+	}
+
 	public getTokens() {
 		return Array.from(this.tokens.values());
 	}
 
 	public getToken(id: string): TokenWrapper | null {
 		return this.tokens.get(id) || null;
+	}
+
+	public createSigningEngine(
+		engine: SigningEngineType,
+		tokenId: string,
+		tokenSlot: string
+	): SigningEngine {
+		const token = this.getToken(tokenId);
+
+		if (!token) {
+			this.logger.warn(
+				`Token with id ${tokenId} not found when creating signing engine`
+			);
+			throw new Error('Token not found');
+		}
+
+		this.logger.debug(
+			`Creating signing engine ${engine} for ${tokenId}.0x${tokenSlot}`
+		);
+
+		return new SigningEngines[engine](token, tokenSlot, this.logger);
 	}
 }
 

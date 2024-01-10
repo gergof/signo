@@ -1,0 +1,33 @@
+<%- include('head', {user}) -%>
+<% if(typeof error != 'undefined') { %>
+	<p class="error"><%= error %></p>
+<% } %>
+<form method="POST">
+	<fieldset>
+		<legend>Edit Signing Engine</legend>
+		<label for="type">Type:</label>
+		<select class="field" id="type" name="type" value="<%= engine.type %>">
+			<% for(const type of types) { %>
+				<option value="<%= type %>"><%= type %></option>
+			<% } %>
+		</select>
+		<label for="name">Name:</label>
+		<input class="field" id="name" type="text" name="name" value="<%= engine.name %>" />
+		<label for="token">Token:</label>
+		<select class="field" id="token" name="token">
+			<% for(const token of tokens) { %>
+				<option value="<%= token %>" <%= engine.tokenId == token ? 'selected' : '' %>><%= token %></option>
+			<% } %>
+		</select>
+		<label for="slot">Token Slot (in hexadecimal, without 0x):</label>
+		<input class="field" id="slot" name="slot" value="<%= engine.tokenSlot %>" />
+		<label for="mechanism">Signing Mechanism:</label>
+		<select class="field" id="mechanism" name="mechanism" selected="<%= engine.mechanism %>">
+			<% for(const mechanism of mechanisms) { %>
+				<option value="<%= mechanism %>" <%= engine.mechanism == mechanism ? 'selected' : '' %>><%= mechanism %></option>
+			<% } %>
+		</select>
+		<input type="submit" value="Save" />
+	</fieldset>
+</form>
+<%- include('foot') -%>

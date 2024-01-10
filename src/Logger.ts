@@ -13,7 +13,7 @@ class Logger {
 	constructor(config: LogConfig) {
 		this.winston = Winston.createLogger({
 			level: config.level,
-			levels: Object.assign({ crypto: 0 }, Winston.config.syslog.levels),
+			levels: Object.assign({ crypto: 0 }, Winston.config.npm.levels),
 			format:
 				config.format == 'json'
 					? Winston.format.combine(

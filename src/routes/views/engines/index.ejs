@@ -1,0 +1,65 @@
+<%- include('head', {user}) -%>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Type</th>
+		<th>Name</th>
+		<th>Active</th>
+		<th>Token</th>
+		<th>Token Status</th>
+		<th>Token Slot</th>
+		<th>Actions</th>
+	</tr>
+	<% for(const engine of engines) { %>
+		<tr>
+			<td><%= engine.id %></td>
+			<td><%= engine.type %></td>
+			<td><%= engine.name %></td>
+			<td>
+				<% if(engine.active) { %>
+					<div class="marker">
+						<div class="yes"></div>
+						<p>Yes</p>
+					</div>
+				<% } else { %>
+					<div class="marker">
+						<div class="no"></div>
+						<p>No</p>
+					</div>
+				<% } %>
+			</td>
+			<td>
+				<a href="/tokens/<%= engine.tokenId %>"><%= engine.tokenId %></a>
+			</td>
+			<td>
+				<% if(engine.tokenPresent) { %>
+					<% if(engine.tokenActive) { %>
+						<div class="marker">
+							<div class="yes"></div>
+							<p>Activated</p>
+						</div>
+					<% } else { %>
+						<div class="marker">
+							<div class="no"></div>
+							<p>Inactive</p>
+						</div>
+					<% } %>
+				<% } else { %>
+					<div class="marker">
+						<div class="na"></div>
+						<p>Not present</p>
+					</div>
+				<% } %>
+			</td>
+			<td>0x<%= engine.tokenSlot %></td>
+			<td>
+				<a href="/engines/change-active/<%= engine.id %>?active=<%= !engine.active %>"><%= engine.active ? 'Deactivate' : 'Activate' %></a>
+				<a href="/engines/edit/<%= engine.id %>">Edit</a>
+				<% if(engine.active && engine.tokenActive) { %>
+					<a href="/engines/sign/<%= engine.id %>">Sign</a>
+				<% } %>
+			</td>
+		</tr>
+	<% } %>
+</table>
+<%- include('foot') -%>

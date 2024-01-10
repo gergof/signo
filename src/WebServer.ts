@@ -3,13 +3,13 @@ import { fileURLToPath } from 'url';
 
 import FastifyCookie from '@fastify/cookie';
 import FastifyFormBody from '@fastify/formbody';
+import FastifyMultipart from '@fastify/multipart';
 import FastifySession from '@fastify/session';
 import FastifyStatic from '@fastify/static';
 import FastifyView from '@fastify/view';
 import { TypeormStore } from 'connect-typeorm';
 import Ejs from 'ejs';
 import Fastify from 'fastify';
-import _ from 'lodash';
 import { DataSource } from 'typeorm';
 
 import { ChildLogger } from './Logger.js';
@@ -86,6 +86,12 @@ class WebServer {
 			rolling: true
 		});
 		this.fastify.register(FastifyFormBody);
+		this.fastify.register(FastifyMultipart, {
+			limits: {
+				files: 1,
+				fileSize: 100 * 1024 * 1024 // 100MiB
+			}
+		});
 	}
 
 	private getFastifyLogger() {
@@ -93,12 +99,33 @@ class WebServer {
 			if (typeof msg == 'string') {
 				return { message: msg };
 			} else {
+				if (msg.err && this.logger.level == 'debug') {
+					// eslint-disable-next-line
+					console.log(msg.err);
+				}
 				return {
-					message: 'HTTP Request',
-					..._.omit(msg, ['req', 'res']),
-					id: msg.req?.id,
-					params: msg.req?.params,
-					query: msg.req?.query
+					message: msg.req
+						? `${msg.req.method} ${msg.req.url}`
+						: msg.res
+							? `HTTP Response ${msg.res.statusCode} ${msg.res.raw.statusMessage}`
+							: 'Error',
+					...(msg.req
+						? {
+								id: msg.req.id,
+								params: msg.req.params,
+								query: msg.req.query
+							}
+						: msg.res
+							? {
+									id: msg.res.request.id,
+									responseTime: msg.responseTime
+								}
+							: {}),
+					...(msg.err
+						? {
+								err: msg.err.toString()
+							}
+						: {})
 				};
 			}
 		};
@@ -116,7 +143,7 @@ class WebServer {
 			debug: (msg: any) =>
 				this.logger.log({ level: 'debug', ...processMessage(msg) }),
 			trace: (msg: any) =>
-				this.logger.log({ level: 'trace', ...processMessage(msg) }),
+				this.logger.log({ level: 'debug', ...processMessage(msg) }),
 			child: () => this.getFastifyLogger()
 		};
 	}

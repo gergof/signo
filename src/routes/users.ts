@@ -127,7 +127,7 @@ const UsersRoute: Route = async (fastify, ctx) => {
 			const user = await Users.findOneById(req.params.id);
 
 			if (!user) {
-				throw new httpErrors.BadRequest('User not found');
+				throw new httpErrors.NotFound('User not found');
 			}
 
 			user.active = req.query.active;

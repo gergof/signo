@@ -4,6 +4,7 @@
 
 	--error: #FF4444;
 	--ok: #44FF44;
+	--na: #AAAAAA;
 
 	--bold: 700;
 }
@@ -56,7 +57,12 @@ th {
 	background-color: var(--lightbg);
 }
 
-input {
+label {
+	display: block;
+	margin-bottom: 2px;
+}
+
+input, select {
 	display: block;
 }
 
@@ -156,6 +162,14 @@ input {
 	height: 12px;
 	border-radius: 6px;
 	background-color: var(--error);
+	margin-right: 4px;
+}
+
+.na {
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	background-color: var(--na);
 	margin-right: 4px;
 }
 
