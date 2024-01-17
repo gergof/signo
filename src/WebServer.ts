@@ -17,6 +17,7 @@ import NonceValidator from './NoneValidator.js';
 import Tokens from './Tokens.js';
 import Session from './models/Session.js';
 import * as routes from './routes/index.js';
+import { GiB } from './utils/fileSize.js';
 import { MINUTE } from './utils/time.js';
 
 interface WebServerConfig {
@@ -94,7 +95,7 @@ class WebServer {
 		this.fastify.register(FastifyMultipart, {
 			limits: {
 				files: 1,
-				fileSize: 200 * 1024 * 1024 // 200 MiB
+				fileSize: 1 * GiB
 			}
 		});
 	}
@@ -108,12 +109,13 @@ class WebServer {
 					// eslint-disable-next-line
 					console.log(msg.err);
 				}
+
 				return {
 					message: msg.req
 						? `${msg.req.method} ${msg.req.url}`
 						: msg.res
 							? `HTTP Response ${msg.res.statusCode} ${msg.res.raw.statusMessage}`
-							: 'Error',
+							: msg.message || 'unknown',
 					...(msg.req
 						? {
 								id: msg.req.id,

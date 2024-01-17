@@ -49,9 +49,18 @@ class TokenWrapper {
 	public getSession() {
 		if (!this.session) {
 			this.session = this.slot.open();
+		}
 
-			if (this.pin) {
+		if (this.pin) {
+			try {
+				this.session.logout();
+			} catch {
+				// doing nothing
+			}
+			try {
 				this.session.login(this.pin, pkcs11.UserType.USER);
+			} catch {
+				// doing nothing
 			}
 		}
 

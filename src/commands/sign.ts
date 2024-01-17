@@ -4,10 +4,12 @@ import fs from 'fs';
 import fsp from 'fs/promises';
 import { Blob } from 'node:buffer';
 import path from 'path';
+import { Readable } from 'stream';
 import streamp from 'stream/promises';
 
 import hmac from '@opsvent/hmac';
 import { Command } from 'commander';
+import { FormDataEncoder } from 'form-data-encoder';
 import { FormData, File } from 'formdata-node';
 import fetch from 'node-fetch';
 
@@ -52,16 +54,22 @@ const sign = async (cmd: Command, options: SignOptions) => {
 	);
 
 	const form = new FormData();
-	form.set('file', new File([new Blob([data])], options.file));
+	form.set(
+		'file',
+		new File([new Blob([data])], options.file, {
+			type: 'application/octet-stream'
+		})
+	);
+	const encoder = new FormDataEncoder(form);
 
 	console.log('- Sending request');
 	const resp = await fetch(endpoint.href, {
 		method: 'POST',
 		headers: {
-			Authorization: sig,
-			'Content-length': Buffer.byteLength(data).toString()
+			...encoder.headers,
+			Authorization: sig
 		},
-		body: form
+		body: Readable.from(encoder.encode())
 	});
 
 	if (resp.status != 200 || !resp.body) {
