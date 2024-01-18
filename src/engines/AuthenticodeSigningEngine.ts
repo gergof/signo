@@ -1,6 +1,7 @@
 import asn1 from 'asn1js';
-import { AuthenticodeSigner, PEFile } from 'authenticode-sign';
+import { AuthenticodeSigner, PEFile, SignOptions } from 'authenticode-sign';
 import * as pkcs11 from 'graphene-pk11';
+import fetch from 'node-fetch';
 
 import OIDs from '../utils/OIDs.js';
 
@@ -10,6 +11,12 @@ class AuthenticodeSigningEngine extends SigningEngine {
 	private static SupportedDigests = ['SHA1', 'SHA256', 'SHA512'] as const;
 
 	private static SupportedAlgorithms = ['RSA', 'ECDSA', 'DSA'] as const;
+
+	private static SHA1Mechanisms = {
+		RSA: 'SHA1_RSA_PKCS',
+		ECDSA: 'ECDSA_SHA1',
+		DSA: 'DSA_SHA1'
+	} as const;
 
 	public supportsStream() {
 		return false;
@@ -27,6 +34,59 @@ class AuthenticodeSigningEngine extends SigningEngine {
 		const digestAlgo = this.getDigestAlgorithm(mechanism as string);
 		const encryptionAlgo = this.getEncryptionAlgorithm(mechanism as string);
 
+		if (digestAlgo != 'SHA1') {
+			// executables should be double signed with SHA1
+			this.logger.debug(
+				`Double signing executable with SHA1 and ${digestAlgo}`
+			);
+			const sha1Signed = await this.createSignedExecutable(
+				content,
+				key,
+				cert,
+				AuthenticodeSigningEngine.SHA1Mechanisms[encryptionAlgo],
+				'SHA1',
+				encryptionAlgo,
+				{ replace: true }
+			);
+			const signed = await this.createSignedExecutable(
+				sha1Signed,
+				key,
+				cert,
+				mechanism,
+				digestAlgo,
+				encryptionAlgo,
+				{ nest: true }
+			);
+
+			return signed;
+		}
+
+		const signed = await this.createSignedExecutable(
+			content,
+			key,
+			cert,
+			mechanism,
+			digestAlgo,
+			encryptionAlgo,
+			{ replace: true }
+		);
+
+		return signed;
+	}
+
+	public async signStream(): Promise<Buffer> {
+		throw new Error('Not implemented');
+	}
+
+	private async createSignedExecutable(
+		content: Buffer,
+		key: pkcs11.PrivateKey,
+		cert: pkcs11.X509Certificate,
+		mechanism: pkcs11.MechanismType,
+		digestAlgo: (typeof AuthenticodeSigningEngine.SupportedDigests)[number],
+		encryptionAlgo: (typeof AuthenticodeSigningEngine.SupportedAlgorithms)[number],
+		extraOpts: SignOptions
+	): Promise<Buffer> {
 		this.logger.debug('Signing with algorithms', {
 			digest: digestAlgo,
 			encryption: encryptionAlgo
@@ -99,6 +159,18 @@ class AuthenticodeSigningEngine extends SigningEngine {
 				}
 
 				return Promise.resolve(signature);
+			},
+			timestamp: async data => {
+				const resp = await fetch('http://timestamp.digicert.com', {
+					method: 'POST',
+					headers: {
+						'Content-type': 'application/timestamp-query',
+						'Content-length': data.byteLength.toString()
+					},
+					body: data
+				});
+
+				return Buffer.from(await resp.arrayBuffer());
 			}
 		});
 
@@ -106,13 +178,9 @@ class AuthenticodeSigningEngine extends SigningEngine {
 		const exe = new PEFile(content);
 
 		this.logger.debug('Signing executable');
-		const signed = await signer.sign(exe, { replace: true });
+		const signed = await signer.sign(exe, extraOpts);
 
 		return signed;
-	}
-
-	public async signStream(): Promise<Buffer> {
-		throw new Error('Not implemented');
 	}
 
 	private getCert(): pkcs11.X509Certificate {
