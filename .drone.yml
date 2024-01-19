@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 trigger:
@@ -38,3 +39,8 @@ steps:
         - success
       event:
         - tag
+---
+kind: signature
+hmac: 8378abae143a56da6681667c44fa5ca03a1d3566bc022baaa2bd66e745555944
+
+...

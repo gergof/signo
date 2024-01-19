@@ -8,10 +8,13 @@ RUN npm ci
 RUN npm run build
 RUN npm ci --only=prod
 
+
+
 FROM node:16-alpine
 
 # Install PKCS#11 modules
-RUN apk add yubico-piv-tool-dev
+RUN apk add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community yubico-piv-tool-dev
+RUN apk cache clean
 
 WORKDIR /app
 COPY --from=builder /root/dist /app/
