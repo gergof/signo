@@ -1,0 +1,40 @@
+kind: pipeline
+type: docker
+trigger:
+  ref:
+    - refs/pull/**
+    - refs/tags/*
+steps:
+  - name: install
+    image: node
+    commands:
+      - npm ci
+  - name: lint
+    image: node
+    commands:
+      - npm run lint
+  - name: typecheck
+    image: node
+    commands:
+      - npm run typecheck
+  - name: clean
+    image: node
+    commands:
+      - rm -Rf node_modules
+  - name: build
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_user
+      password:
+        from_secret: docker_password
+      repo: gergof/signo
+      autotag: true
+      tags:
+        - latest
+        - ${DRONE_TAG}
+    when:
+      status:
+        - success
+      event:
+        - tag
