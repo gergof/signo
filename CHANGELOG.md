@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/gergof/signo/compare/v0.1.2...v0.1.3) (2024-01-19)
+
+
+### Build/CI
+
+* Fixed Dockerfile ([ece0605](https://github.com/gergof/signo/commit/ece06056172f612a07893e01f8f157af5afa516d))
+
 ### [0.1.2](https://github.com/gergof/signo/compare/v0.1.1...v0.1.2) (2024-01-19)
 
 
