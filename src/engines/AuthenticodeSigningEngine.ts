@@ -30,6 +30,11 @@ class AuthenticodeSigningEngine extends SigningEngine {
 
 		const key = this.getPrivateKey();
 		const cert = this.getCert();
+		const intermediateCerts = this.getIntermediateCerts(cert);
+
+		this.logger.debug(
+			`Found ${intermediateCerts.length} certificates to add to the chain`
+		);
 
 		const digestAlgo = this.getDigestAlgorithm(mechanism as string);
 		const encryptionAlgo = this.getEncryptionAlgorithm(mechanism as string);
@@ -43,6 +48,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 				content,
 				key,
 				cert,
+				intermediateCerts,
 				AuthenticodeSigningEngine.SHA1Mechanisms[encryptionAlgo],
 				'SHA1',
 				encryptionAlgo,
@@ -52,6 +58,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 				sha1Signed,
 				key,
 				cert,
+				intermediateCerts,
 				mechanism,
 				digestAlgo,
 				encryptionAlgo,
@@ -65,6 +72,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 			content,
 			key,
 			cert,
+			intermediateCerts,
 			mechanism,
 			digestAlgo,
 			encryptionAlgo,
@@ -82,6 +90,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 		content: Buffer,
 		key: pkcs11.PrivateKey,
 		cert: pkcs11.X509Certificate,
+		intermediateCerts: pkcs11.X509Certificate[],
 		mechanism: pkcs11.MechanismType,
 		digestAlgo: (typeof AuthenticodeSigningEngine.SupportedDigests)[number],
 		encryptionAlgo: (typeof AuthenticodeSigningEngine.SupportedAlgorithms)[number],
@@ -98,6 +107,8 @@ class AuthenticodeSigningEngine extends SigningEngine {
 			getSignatureAlgorithmOid: () =>
 				OIDs.signAlgos[encryptionAlgo][digestAlgo],
 			getCertificate: () => cert.value,
+			getIntermediateCertificates: () =>
+				intermediateCerts.map(cert => cert.value),
 			digest: dataIterator => {
 				this.logger.debug('Hashing data');
 				const digest = this.token.getSession().createDigest(digestAlgo);
@@ -200,6 +211,33 @@ class AuthenticodeSigningEngine extends SigningEngine {
 		}
 
 		return certs.items(0).toType();
+	}
+
+	private getIntermediateCerts(
+		cert: pkcs11.X509Certificate
+	): pkcs11.X509Certificate[] {
+		if (Buffer.compare(cert.issuer, cert.subject) == 0) {
+			// self-signed cert, would result in infinite loop
+			return [];
+		}
+
+		const certs = this.token.getSession().find({
+			class: pkcs11.ObjectClass.CERTIFICATE,
+			certType: pkcs11.CertificateType.X_509,
+			subject: cert.issuer
+		});
+
+		if (certs.length > 0) {
+			const intermediateCert = certs
+				.items(0)
+				.toType() as pkcs11.X509Certificate;
+			return [
+				intermediateCert,
+				...this.getIntermediateCerts(intermediateCert)
+			];
+		}
+
+		return [];
 	}
 
 	private getDigestAlgorithm(

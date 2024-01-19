@@ -65,6 +65,11 @@ class Tokens {
 	public loadTokens() {
 		this.logger.info('Loading tokens');
 
+		// close all token sessions
+		for (const token of this.tokens.values()) {
+			token.deactivate();
+		}
+
 		this.tokens.clear();
 
 		for (const mod of this.modules.values()) {
