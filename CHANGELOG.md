@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/gergof/signo/compare/v0.1.1...v0.1.2) (2024-01-19)
+
+
+### Features
+
+* Attach the whole certificate chain when signing with authenticode if present on the token ([fca39c2](https://github.com/gergof/signo/commit/fca39c2a94aeab5b5f5af71308928956c4c08b22))
+
+
+### Documentation
+
+* Added planned features ([8287713](https://github.com/gergof/signo/commit/82877132cd38bb87bb4867c67543daf7899cf4d6))
+
+
+### Build/CI
+
+* Added dockerfile and drone build script ([55279d1](https://github.com/gergof/signo/commit/55279d1f2e449b907e93573a31235e182e97984b))
+
 ### 0.1.1 (2024-01-18)
 
 
