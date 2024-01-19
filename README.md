@@ -201,3 +201,10 @@ if (resp.status != 200 || !resp.body) {
 // convert the signed response to a buffer
 const signature = Buffer.from(await resp.arrayBuffer());
 ```
+
+### Planned features
+
+- Crypto log: cryptographically verifiable log of all the operations
+- PDF signing
+- Key and CSR generation
+- Import certificates to tokens
