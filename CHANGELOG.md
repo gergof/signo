@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/gergof/signo/compare/v0.1.5...v0.1.6) (2024-01-22)
+
+
+### Bug Fixes
+
+* Remove private from package.json ([9cccdec](https://github.com/gergof/signo/commit/9cccdec0781799f47e23f58273c7fa77a087d32e))
+
 ### [0.1.5](https://github.com/gergof/signo/compare/v0.1.4...v0.1.5) (2024-01-22)
 
 
