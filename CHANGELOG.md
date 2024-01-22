@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/gergof/signo/compare/v0.1.3...v0.1.4) (2024-01-22)
+
+
+### Build/CI
+
+* Updated buid script and added bin entrypoint ([32a4846](https://github.com/gergof/signo/commit/32a48468f1bfb60d4cb77d3484d221e5726f99cd))
+
 ### [0.1.3](https://github.com/gergof/signo/compare/v0.1.2...v0.1.3) (2024-01-19)
 
 
