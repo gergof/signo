@@ -1,5 +1,5 @@
 {
-  "name": "signo",
+  "name": "signo-server",
   "version": "0.1.3",
   "private": true,
   "type": "module",
@@ -17,6 +17,13 @@
     "generate:migration": "typeorm migration:create",
     "release": "standard-version",
     "release:pre": "standard-version --prerelease"
+  },
+  "files": [
+    "bin/*",
+    "dist/*/**"
+  ],
+  "bin": {
+    "signo": "./bin/signo.js"
   },
   "repository": {
     "type": "git",

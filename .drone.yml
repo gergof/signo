@@ -14,15 +14,33 @@ steps:
     image: node
     commands:
       - npm run lint
+    depends_on:
+      - install
   - name: typecheck
     image: node
     commands:
       - npm run typecheck
-  - name: clean
+    depends_on:
+      - install
+  - name: build_npm
     image: node
+    environment:
+      NPM_TOKEN:
+        from_secret: npm_token
     commands:
-      - rm -Rf node_modules
-  - name: build
+      - npm run build
+      - npm set registry https://registry.npmjs.org
+      - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      - npm publish
+    when:
+      status:
+        - success
+      event:
+        - tag
+    depends_on:
+      - lint
+      - typecheck
+  - name: build_docker
     image: plugins/docker
     settings:
       username:
@@ -39,8 +57,11 @@ steps:
         - success
       event:
         - tag
+    depends_on:
+      - lint
+      - typecheck
 ---
 kind: signature
-hmac: 8378abae143a56da6681667c44fa5ca03a1d3566bc022baaa2bd66e745555944
+hmac: 8203f3450a8a4ccf35a0a4463c5550183118cdf5e4f6da7e7d91270681c6ba41
 
 ...
