@@ -20,7 +20,7 @@
   },
   "files": [
     "bin/*",
-    "dist/*/**"
+    "dist/**/*"
   ],
   "bin": {
     "signo": "./bin/signo.js"
