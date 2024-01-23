@@ -1,6 +1,6 @@
 {
   "name": "signo-server",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "description": "Open source, self hosted signing service with PKCS#11 support",
   "main": "dist/index.js",

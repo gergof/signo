@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/gergof/signo/compare/v0.1.6...v0.1.7) (2024-01-23)
+
+
+### Bug Fixes
+
+* **AuthenticodeSigningEngine:** Allow any key length for ECDSA signatures when encoding them as ASN.1 ([e996f98](https://github.com/gergof/signo/commit/e996f9881d391e2ef9ee6bfd69e2c19b58e1fa7f))
+
 ### [0.1.6](https://github.com/gergof/signo/compare/v0.1.5...v0.1.6) (2024-01-22)
 
 
