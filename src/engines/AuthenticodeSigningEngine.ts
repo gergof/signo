@@ -143,25 +143,35 @@ class AuthenticodeSigningEngine extends SigningEngine {
 
 				// if algo is ECDSA, convert RS to ASN.1
 				if (encryptionAlgo == 'ECDSA') {
-					if (signature.byteLength == 70) {
-						// already in ASN.1 format probably
-						return Promise.resolve(signature);
+					const ecParams = key.getAttribute({paramsECDSA: null});
+
+					if (!ecParams.paramsECDSA) {
+						throw new Error('Failed to get key curve');
 					}
 
-					if (signature.byteLength != 64) {
+					const curve = pkcs11.NamedCurve.getByBuffer(
+						ecParams.paramsECDSA
+					);
+
+					if (signature.byteLength != (curve.size / 8) * 2) {
 						// not valid RS
 						throw new Error(
-							'Failed to encode ECDSA signature as ASN.1 sequence'
+							`Failed to encode ECDSA signature as ASN.1 sequence. Expected length of ${
+								(curve.size / 8) * 2
+							} but got ${signature.byteLength}`
 						);
 					}
 
 					const sequence = new asn1.Sequence({
 						value: [
 							new asn1.Integer({
-								valueHex: signature.subarray(0, 32)
+								valueHex: signature.subarray(0, curve.size / 8)
 							}),
 							new asn1.Integer({
-								valueHex: signature.subarray(32, 64)
+								valueHex: signature.subarray(
+									curve.size / 8,
+									(curve.size / 8) * 2
+								)
 							})
 						]
 					});
