@@ -143,7 +143,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 
 				// if algo is ECDSA, convert RS to ASN.1
 				if (encryptionAlgo == 'ECDSA') {
-					const ecParams = key.getAttribute({paramsECDSA: null});
+					const ecParams = key.getAttribute({ paramsECDSA: null });
 
 					if (!ecParams.paramsECDSA) {
 						throw new Error('Failed to get key curve');
