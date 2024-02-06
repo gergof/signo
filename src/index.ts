@@ -1,7 +1,8 @@
-import { Command, InvalidArgumentError, Option } from 'commander';
+import { Argument, Command, InvalidArgumentError, Option } from 'commander';
 
 import generateSecret from './commands/generate-secret.js';
 import hash from './commands/hash.js';
+import service from './commands/service.js';
 import sign from './commands/sign.js';
 import start from './commands/start.js';
 
@@ -71,7 +72,7 @@ const main = () => {
 
 	program
 		.command('hash')
-		.description('Hash an input password')
+		.description('hash an input password')
 		.option('-s, --silent', 'only output the hash', false)
 		.arguments('<password>')
 		.action((password, options, cmd) => {
@@ -80,7 +81,7 @@ const main = () => {
 
 	program
 		.command('sign')
-		.description('Sign file using signo server')
+		.description('sign file using signo server')
 		.option(
 			'-s, --server <server>',
 			'endpoint of signo server',
@@ -97,6 +98,36 @@ const main = () => {
 		.arguments('<file>')
 		.action((file, options, cmd) => {
 			sign(cmd, { ...options, file });
+		});
+
+	program
+		.command('service')
+		.description('manage signo systemd service')
+		.option(
+			'--no-user',
+			'(during install) do not create system user for signo',
+			true
+		)
+		.option(
+			'--password <password>',
+			'(during install) specify the administrator password',
+			'admin'
+		)
+		.option(
+			'--remove-config',
+			'(during remove) remove the configuration files as well',
+			false
+		)
+		.addArgument(
+			new Argument('action', 'the action to execute').choices([
+				'install',
+				'remove',
+				'start',
+				'stop'
+			])
+		)
+		.action((action, options, cmd) => {
+			service(cmd, { ...options, action });
 		});
 
 	program.parse();
