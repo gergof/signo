@@ -16,13 +16,20 @@ const ConfigSchema = Type.Object({
 		secret: Type.String(),
 		adminPassword: Type.String()
 	}),
-	database: Type.Object({
-		host: Type.String(),
-		port: Type.Integer({ min: 1, max: 65535 }),
-		database: Type.String(),
-		user: Type.String(),
-		password: Type.String()
-	}),
+	database: Type.Union([
+		Type.Object({
+			type: Type.Literal('mysql'),
+			host: Type.String(),
+			port: Type.Integer({ min: 1, max: 65535 }),
+			database: Type.String(),
+			user: Type.String(),
+			password: Type.String()
+		}),
+		Type.Object({
+			type: Type.Literal('sqlite'),
+			database: Type.String()
+		})
+	]),
 	pkcs11Modules: Type.Record(Type.String(), Type.String())
 });
 
@@ -113,6 +120,14 @@ class Config {
 	get database() {
 		if (!this.config) {
 			throw new Error('Config not initialized');
+		}
+
+		if (this.config.database.type == 'sqlite') {
+			// resolve path relative to config file for sqlite
+			return {
+				...this.config.database,
+				database: this.getFilePath(this.config.database.database)
+			};
 		}
 
 		return this.config.database;

@@ -48,11 +48,16 @@ https:
   secret: "..." # secret used for sessions (use generate-secret command to generate)
   adminPassword: "..." # hashed password of the built-in administrator user (use hash command to generate)
 database:
+  type: mysql
   host: localhost # MySQL database host
   port: 3306 # MySQL database port
   database: signo # database name
   user: signo # database user
   password: signo # database password
+# OR when using SQLite database:
+database:
+  type: sqlite
+  database: signo.db # the path (relative to config file) to the sqlite database
 pkcs11Modules:
   # list of pkcs11 modules in the format <name>: <path>
   YKCS11: /usr/local/lib/libykcs11.so # load pkcs11 module for Yubikey

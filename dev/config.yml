@@ -5,6 +5,7 @@ https:
   secret: "Z/prLyfRKQ2NRMUy2gR1u3pcEeuj01fMAjcAQt+/QmHatlRaEHVaZy8h4z5Mv4/xf92bd8HPvWz1LzL/twqrAA=="
   adminPassword: "$2b$10$jKGJQU7SsXl/ezZL98lni.jEQGcrb3FQntYa9Cws/tdkVn1.KOU5m"
 database:
+  type: mysql
   host: localhost
   port: 3306
   database: signo

@@ -5,13 +5,21 @@ import { ChildLogger } from './Logger.js';
 import * as migrations from './migrations/index.js'; // eslint-disable-line import/namespace
 import * as models from './models/index.js';
 
-interface DatabaseConfig {
+interface MySQLDatabaseConfig {
+	type: 'mysql';
 	host: string;
 	port: number;
 	user: string;
 	password: string;
 	database: string;
 }
+
+interface SQLiteDatabaseConfig {
+	type: 'sqlite';
+	database: string;
+}
+
+type DatabaseConfig = MySQLDatabaseConfig | SQLiteDatabaseConfig;
 
 class Database {
 	private logger: ChildLogger;
@@ -24,12 +32,7 @@ class Database {
 		this.config = config;
 
 		this.datasource = new DataSource({
-			type: 'mysql',
-			host: this.config.host,
-			port: this.config.port,
-			username: this.config.user,
-			password: this.config.password,
-			database: this.config.database,
+			...config,
 			logging: false,
 			entities: Object.values(models),
 			migrations: Object.values(migrations),
