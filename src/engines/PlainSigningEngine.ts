@@ -31,7 +31,11 @@ class PlainSigningEngine extends SigningEngine {
 
 		return new Promise((resolve, reject) => {
 			stream.on('data', data => {
-				sign.update(data);
+				try {
+					sign.update(data);
+				} catch (e) {
+					reject(e);
+				}
 			});
 
 			stream.on('error', e => {
@@ -39,7 +43,11 @@ class PlainSigningEngine extends SigningEngine {
 			});
 
 			stream.on('end', () => {
-				resolve(sign.final());
+				try {
+					resolve(sign.final());
+				} catch (e) {
+					reject(e);
+				}
 			});
 		});
 	}

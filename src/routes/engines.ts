@@ -369,26 +369,33 @@ const EnginesRoute: Route = async (fastify, ctx) => {
 				);
 			}
 
-			const sign = ctx.tokens.createSigningEngine(
-				engine.type,
-				engine.tokenId,
-				engine.tokenSlot
-			);
+			try {
+				const sign = ctx.tokens.createSigningEngine(
+					engine.type,
+					engine.tokenId,
+					engine.tokenSlot
+				);
 
-			const signature = sign.supportsStream()
-				? await sign.signStream(data.file, engine.mechanism)
-				: await sign.sign(await data.toBuffer(), engine.mechanism);
+				const signature = sign.supportsStream()
+					? await sign.signStream(data.file, engine.mechanism)
+					: await sign.sign(await data.toBuffer(), engine.mechanism);
 
-			return resp
-				.header(
-					'content-disposition',
-					`attachment; filename=${encodeURIComponent(
-						data.filename
-					)}.sig`
-				)
-				.send(signature)
-				.type('application/octet-stream')
-				.code(200);
+				return resp
+					.header(
+						'content-disposition',
+						`attachment; filename=${encodeURIComponent(
+							data.filename
+						)}.sig`
+					)
+					.send(signature)
+					.type('application/octet-stream')
+					.code(200);
+			} catch (e) {
+				ctx.logger.error('Failed to compute signature', { e });
+				return new httpErrors.InternalServerError(
+					'Failed to compute signature'
+				);
+			}
 		}
 	);
 };

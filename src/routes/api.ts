@@ -46,18 +46,25 @@ const ApiRoute: Route = async (fastify, ctx) => {
 				throw new httpErrors.Forbidden('Token is not activated');
 			}
 
-			const sign = ctx.tokens.createSigningEngine(
-				engine.type,
-				engine.tokenId,
-				engine.tokenSlot
-			);
+			try {
+				const sign = ctx.tokens.createSigningEngine(
+					engine.type,
+					engine.tokenId,
+					engine.tokenSlot
+				);
 
-			const signature = await sign.sign(file, engine.mechanism);
+				const signature = await sign.sign(file, engine.mechanism);
 
-			return resp
-				.send(signature)
-				.type('application/octet-stream')
-				.code(200);
+				return resp
+					.send(signature)
+					.type('application/octet-stream')
+					.code(200);
+			} catch (e) {
+				ctx.logger.error('Failed to compute signature', { e });
+				return new httpErrors.InternalServerError(
+					'Failed to compute signature'
+				);
+			}
 		}
 	);
 };
