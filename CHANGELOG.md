@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/gergof/signo/compare/v0.1.8...v1.0.0) (2024-02-06)
+
+
+### Features
+
+* Added support for SQLite databases ([d5a99e6](https://github.com/gergof/signo/commit/d5a99e69964664b5b6c0527a67eb420b408d841d))
+
+
+### Bug Fixes
+
+* Fix crash when signing fails due to a pkcs11 error ([273f0fa](https://github.com/gergof/signo/commit/273f0fa52fc6e1db0cae0aec5ecc56849abcb0ce))
+* Fixed that signing engine type was not selected when editing it ([43fd23e](https://github.com/gergof/signo/commit/43fd23e91a078b8c5650ed2149c07833381cb973))
+
 ### [0.1.8](https://github.com/gergof/signo/compare/v0.1.7...v0.1.8) (2024-02-02)
 
 ### [0.1.7](https://github.com/gergof/signo/compare/v0.1.6...v0.1.7) (2024-01-23)
