@@ -9,6 +9,34 @@ Signo is a simple NodeJS application that can be used to sign files through an H
 
 New codesigning certificates need to be stored on a hardware token which comes with a great challenge for CI applications. Signo tries to solve this by providing a HTTP API which can be used to generate signed executables.
 
+### Quick Start
+
+Signo is available either through NPM (https://www.npmjs.com/package/signo-server) or Docker Hub (https://hub.docker.com/r/gergof/signo). The simplest way to get it is through NPM.
+
+First of all you need a Linux machine with NodeJS 16 installed (currently there's a problem with NodeJS 18. [See Issue](https://github.com/PeculiarVentures/pkcs11js/issues/105)).
+
+Then you need to install signo as a global package.
+```bash
+sudo npm install -g signo-server
+```
+
+Now you can start it using `signo start`. If you want to integrate it with Systemd, you can do the following:
+```bash
+sudo signo service install --password 'AdminPa$$w0rd'
+```
+
+This command will create a system unit called `signo.service`, a configuration folder (`/etc/signo`), a base configuration (`/etc/signo/signo.yml`) and a log folder (`/var/log/signo`). The admin password is set to the value of the `--password` option or defaults to `admin`.
+
+Now you have to set an SSL certificate in `/etc/signo/signo.yml` and list the PKCS#11 modules there.
+
+You can start and stop the service using `signo service start` and `signo service stop` anytime.
+
+If you want to delete the service you can execute the following:
+```bash
+sudo signo service remove --removeConfig
+sudo npm remove -g signo-server
+```
+
 ### Features
 
 ##### Users
@@ -64,25 +92,27 @@ pkcs11Modules:
 ```
 
 ### Usage
+
 ```
 Usage: signo [options] [command]
 
 Signing server with PKCS#11 support
 
 Options:
-  --log-level <level>        log level (choices: "debug", "info", "warn", "error", "crypto", default:
-                             "info")
-  --log-format <format>      log format (choices: "text", "json", default: "text")
-  --log-file <file>          rotated log file name (default: "signo.log")
-  --crypto-log-file <file>   optional file to contain only the crypto log
-  -h, --help                 display help for command
+  --log-level <level>         log level (choices: "debug", "info", "warn", "error", "crypto", default:
+                              "info")
+  --log-format <format>       log format (choices: "text", "json", default: "text")
+  --log-file <file>           rotated log file name (default: "signo.log")
+  --crypto-log-file <file>    optional file to contain only the crypto log
+  -h, --help                  display help for command
 
 Commands:
-  start [options]            start the service
-  generate-secret [options]  generate secret for http sessions
-  hash [options] <password>  Hash an input password
-  sign [options] <file>      Sign file using signo server
-  help [command]             display help for command
+  start [options]             start the service
+  generate-secret [options]   generate secret for http sessions
+  hash [options] <password>   hash an input password
+  sign [options] <file>       sign file using signo server
+  service [options] <action>  manage signo systemd service
+  help [command]              display help for command
 ```
 
 #### Commands
@@ -117,7 +147,7 @@ Options:
 ```
 Usage: signo hash [options] <password>
 
-Hash an input password
+hash an input password
 
 Options:
   -s, --silent  only output the hash (default: false)
@@ -129,7 +159,7 @@ Options:
 ```
 Usage: signo sign [options] <file>
 
-Sign file using signo server
+sign file using signo server
 
 Options:
   -s, --server <server>  endpoint of signo server (default: "https://localhost:3000/")
@@ -141,9 +171,26 @@ Options:
   -h, --help             display help for command
 ```
 
+##### Service
+
+```
+Usage: signo service [options] <action>
+
+manage signo systemd service
+
+Arguments:
+  action                 the action to execute (choices: "install", "remove", "start", "stop")
+
+Options:
+  --no-user              (during install) do not create system user for signo
+  --password <password>  (during install) specify the administrator password (default: "admin")
+  --remove-config        (during remove) remove the configuration files as well (default: false)
+  -h, --help             display help for command
+```
+
 ### Using the API
 
-You can refer to a sample implementation of the API client in the sign command.
+You can refer to a sample implementation of the API client in the sign command. Or you can use [signo-client](https://www.npmjs.com/package/signo-client).
 
 The API endpoint is `/api/sign/:signingEngineId`
 
