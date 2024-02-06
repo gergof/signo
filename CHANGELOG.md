@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/gergof/signo/compare/v1.0.0...v1.1.0) (2024-02-06)
+
+
+### Features
+
+* Added command for managing signo using a systemd service ([b9e0ef9](https://github.com/gergof/signo/commit/b9e0ef913c0fc5dd97725b77ee6c6aa1536f7f95))
+
+
+### Documentation
+
+* Added documentation for service command ([a2fc211](https://github.com/gergof/signo/commit/a2fc211797f0aa7d639754b6e5467271cf0da6bc))
+
 ## [1.0.0](https://github.com/gergof/signo/compare/v0.1.8...v1.0.0) (2024-02-06)
 
 
