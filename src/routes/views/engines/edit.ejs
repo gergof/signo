@@ -8,7 +8,7 @@
 		<label for="type">Type:</label>
 		<select class="field" id="type" name="type" value="<%= engine.type %>">
 			<% for(const type of types) { %>
-				<option value="<%= type %>"><%= type %></option>
+				<option value="<%= type %>" <%= engine.type == type ? 'selected' : '' %>><%= type %></option>
 			<% } %>
 		</select>
 		<label for="name">Name:</label>
