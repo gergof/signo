@@ -25,6 +25,8 @@ Now you can start it using `signo start`. If you want to integrate it with Syste
 sudo signo service install --password 'AdminPa$$w0rd'
 ```
 
+If you want to run signo as root (only root user can use the default https port), also pass the `--no-user` parameter.
+
 This command will create a system unit called `signo.service`, a configuration folder (`/etc/signo`), a base configuration (`/etc/signo/signo.yml`) and a log folder (`/var/log/signo`). The admin password is set to the value of the `--password` option or defaults to `admin`.
 
 Now you have to set an SSL certificate in `/etc/signo/signo.yml` and list the PKCS#11 modules there.
