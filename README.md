@@ -39,6 +39,54 @@ sudo signo service remove --removeConfig
 sudo npm remove -g signo-server
 ```
 
+##### YubiKey example
+
+The cheapest solution is probably a YubiKey 5 FIPS validated hardware token. The setup looks as following for it on a Debian based OS:
+```bash
+# Become root
+sudo -s
+
+# Install NodeJS 16
+curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+apt install nodejs
+
+# Install Signo
+npm install -g signo-server
+
+# Create a systemd service that will run as root
+signo service install --password 'SomeSecureAdminPassword' --no-user
+
+# Get some SSL certificates for Signo
+# They can even be self-signed. The important is that your infrastructure trusts that certificate
+# And save them to /etc/signo/signo.key (private key)
+# and /etc/signo/signo.crt (certificate)
+
+# Install pkcs11 module for yubikey
+# Your distribution might already include the yubico-piv-tool package which has this.
+# In that case you can use `apt install yubico-piv-tool`, but if you want to get a
+# a somewhat fresh version, you have to compile it from source (recommended)
+apt install cmake libtool libssl-dev pkg-config check libpcsclite-dev gengetopt help2man
+git clone --depth 1 https://github.com/Yubico/yubico-piv-tool.git
+cd yubico-piv-tool
+mkdir build
+cd build
+cmake ..
+make
+make install
+
+# Update your configuration in /etc/signo/signo.yml
+nano /etc/signo/signo.yml
+# at the pkcs11Modules section add an entry, for example:
+# ...
+# pkcs11Modules:
+#   YKCS11: /usr/local/lib/libykcs11.so
+
+# Enable and start the service:
+systemctl enable signo
+systemctl start signo
+# or you can use the `signo service start` command
+```
+
 ### Features
 
 ##### Users

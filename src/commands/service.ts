@@ -59,7 +59,7 @@ const service = async (cmd: Command, options: ServiceOptions) => {
 			await fsp.writeFile(
 				'/etc/signo/signo.yml',
 				`https:
-  port: 3500
+  port: ${options.user ? '3500' : '443'}
   key: signo.key
   cert: signo.crt
   secret: ${crypto.randomBytes(64).toString('base64')}
