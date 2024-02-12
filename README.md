@@ -65,8 +65,8 @@ signo service install --password 'SomeSecureAdminPassword' --no-user
 # Your distribution might already include the yubico-piv-tool package which has this.
 # In that case you can use `apt install yubico-piv-tool`, but if you want to get a
 # a somewhat fresh version, you have to compile it from source (recommended)
-apt install cmake libtool libssl-dev pkg-config check libpcsclite-dev gengetopt help2man
-git clone --depth 1 https://github.com/Yubico/yubico-piv-tool.git
+apt install build-essential cmake libtool libssl-dev pkg-config check libpcsclite-dev gengetopt help2man zlib1g-dev pcscd
+git clone --depth 1 --branch yubico-piv-tool-2.5.0 https://github.com/Yubico/yubico-piv-tool.git
 cd yubico-piv-tool
 mkdir build
 cd build
