@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/gergof/signo/compare/v1.1.3...v1.1.4) (2024-02-12)
+
+
+### Bug Fixes
+
+* Fixed ejs views not included in build ([cbf3fa8](https://github.com/gergof/signo/commit/cbf3fa87fe7f9c2f1600a4ae5c8abaf20d9db6c4))
+
+
+### Documentation
+
+* Update docs ([c722f0b](https://github.com/gergof/signo/commit/c722f0b918c94374460d5bb7a67eee0df2c3a58a))
+
 ### [1.1.3](https://github.com/gergof/signo/compare/v1.1.2...v1.1.3) (2024-02-12)
 
 
