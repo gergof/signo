@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/gergof/signo/compare/v1.1.1...v1.1.2) (2024-02-12)
+
+
+### Build/CI
+
+* Use node 18 for building ([bb11b51](https://github.com/gergof/signo/commit/bb11b5169a7f2ee838f6a67516670e4f2426dc65))
+
 ### [1.1.1](https://github.com/gergof/signo/compare/v1.1.0...v1.1.1) (2024-02-12)
 
 
