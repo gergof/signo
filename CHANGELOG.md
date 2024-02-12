@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/gergof/signo/compare/v1.1.0...v1.1.1) (2024-02-12)
+
+
+### Documentation
+
+* Added comment about running it as root ([0eda5ab](https://github.com/gergof/signo/commit/0eda5abcd4b42772a0f0ac06eb8c7598bb6dcd5b))
+* Added yubikey example ([8d6d763](https://github.com/gergof/signo/commit/8d6d763d81c4cda10bd95a9c6db4b2834c099f83))
+
 ## [1.1.0](https://github.com/gergof/signo/compare/v1.0.0...v1.1.0) (2024-02-06)
 
 
