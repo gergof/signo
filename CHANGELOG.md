@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/gergof/signo/compare/v1.1.2...v1.1.3) (2024-02-12)
+
+
+### Bug Fixes
+
+* Move rimraf to dependency from dev dependencies ([92bbd0e](https://github.com/gergof/signo/commit/92bbd0ecc41b7d37963509d6a12505b501521023))
+
 ### [1.1.2](https://github.com/gergof/signo/compare/v1.1.1...v1.1.2) (2024-02-12)
 
 
