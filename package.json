@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node-esm --project ./tsconfig.json src/index.ts --log-level debug start -c dev/config.yml",
     "cmd": "ts-node-esm --project ./tsconfig.json src/index.ts",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc && recursive-copy -w src/routes/views dist/routes/views",
     "typecheck": "tsc --noEmit",
     "lint": "esw --color --ext .ts src",
     "lint:fix": "esw --color --fix --ext .ts src",
@@ -50,6 +50,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-watch": "^8.0.0",
     "prettier": "^3.2.4",
+    "recursive-copy-cli": "^1.0.20",
     "standard-version": "^9.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
