@@ -13,7 +13,7 @@ New codesigning certificates need to be stored on a hardware token which comes w
 
 Signo is available either through NPM (https://www.npmjs.com/package/signo-server) or Docker Hub (https://hub.docker.com/r/gergof/signo). The simplest way to get it is through NPM.
 
-First of all you need a Linux machine with NodeJS 16 installed (currently there's a problem with NodeJS 18. [See Issue](https://github.com/PeculiarVentures/pkcs11js/issues/105)).
+First of all you need a Linux machine with NodeJS 16 or 18 installed.
 
 Then you need to install signo as a global package.
 ```bash
@@ -48,8 +48,8 @@ The cheapest solution is probably a YubiKey 5 FIPS validated hardware token. The
 # Become root
 sudo -s
 
-# Install NodeJS 16
-curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+# Install NodeJS 16 or 18
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 apt install nodejs
 
 # Install Signo
