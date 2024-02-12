@@ -7,23 +7,23 @@ trigger:
     - refs/tags/*
 steps:
   - name: install
-    image: node
+    image: node:18
     commands:
       - npm ci
   - name: lint
-    image: node
+    image: node:18
     commands:
       - npm run lint
     depends_on:
       - install
   - name: typecheck
-    image: node
+    image: node:18
     commands:
       - npm run typecheck
     depends_on:
       - install
   - name: build_npm
-    image: node
+    image: node:18
     environment:
       NPM_TOKEN:
         from_secret: npm_token
@@ -62,6 +62,6 @@ steps:
       - typecheck
 ---
 kind: signature
-hmac: 8203f3450a8a4ccf35a0a4463c5550183118cdf5e4f6da7e7d91270681c6ba41
+hmac: 8b8f80e8d3ccbd1e8ee4bda6d5b90e33321bae82f06b5560f997dcd037c31c61
 
 ...
