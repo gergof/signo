@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node-esm --project ./tsconfig.json src/index.ts --log-level debug start -c dev/config.yml",
     "cmd": "ts-node-esm --project ./tsconfig.json src/index.ts",
-    "build": "rimraf dist && tsc && recursive-copy -w src/routes/views dist/routes/views",
+    "build": "rimraf dist && tsc && recursive-copy -w src/routes/views dist/routes/views && recursive-copy -w src/static dist/static",
     "typecheck": "tsc --noEmit",
     "lint": "esw --color --ext .ts src",
     "lint:fix": "esw --color --fix --ext .ts src",
