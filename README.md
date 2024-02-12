@@ -33,6 +33,8 @@ Now you have to set an SSL certificate in `/etc/signo/signo.yml` and list the PK
 
 You can start and stop the service using `signo service start` and `signo service stop` anytime.
 
+To set up tokens, signing engines, etc you can log in with the user `admin` and the password you set earlier.
+
 If you want to delete the service you can execute the following:
 ```bash
 sudo signo service remove --removeConfig
