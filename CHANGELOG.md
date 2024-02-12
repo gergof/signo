@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/gergof/signo/compare/v1.1.4...v1.1.5) (2024-02-12)
+
+
+### Bug Fixes
+
+* Fixed static files not included in build ([7020230](https://github.com/gergof/signo/commit/70202308d5610a28b4ea652bc286014fb618a1f5))
+
 ### [1.1.4](https://github.com/gergof/signo/compare/v1.1.3...v1.1.4) (2024-02-12)
 
 
