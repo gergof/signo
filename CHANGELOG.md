@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/gergof/signo/compare/v1.1.5...v1.1.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* Signo was only listening on localhost ([65bcbf0](https://github.com/gergof/signo/commit/65bcbf01b79e529bd2ef40a19046ed2544f4661a))
+
+
+### Documentation
+
+* Added login instructions ([b5c6f3c](https://github.com/gergof/signo/commit/b5c6f3cea75da3cbd38900fb09d0d69d7c801f96))
+* Nodejs 18 is also supported ([5d953ac](https://github.com/gergof/signo/commit/5d953ac662c64cb3d1de4260c822c92ad23377c3))
+
 ### [1.1.5](https://github.com/gergof/signo/compare/v1.1.4...v1.1.5) (2024-02-12)
 
 
