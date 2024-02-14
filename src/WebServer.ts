@@ -170,7 +170,7 @@ class WebServer {
 		}
 
 		this.logger.debug('Start listening');
-		await this.fastify.listen({ port: this.config.port });
+		await this.fastify.listen({ host: '0.0.0.0', port: this.config.port });
 
 		this.logger.info('Ready to respond to requests', {
 			port: this.config.port
