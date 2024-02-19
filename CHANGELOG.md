@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.7](https://github.com/gergof/signo/compare/v1.1.6...v1.1.7) (2024-02-19)
+
+
+### Bug Fixes
+
+* **WebServer:** Listen on IPv6 addresses as well ([f9865b8](https://github.com/gergof/signo/commit/f9865b8e014e4dab02110776f91e210556bf6ee6))
+
 ### [1.1.6](https://github.com/gergof/signo/compare/v1.1.5...v1.1.6) (2024-02-14)
 
 
