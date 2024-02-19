@@ -2,3 +2,4 @@ node_modules
 .eslintcache
 dist
 signo.log*
+dev/signo.db
