@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/gergof/signo/compare/v1.1.7...v1.2.0) (2025-02-25)
+
+
+### Features
+
+* Allow multiple simultaneous signatures by using separate sessions for each operation ([bcb015b](https://github.com/gergof/signo/commit/bcb015bbfb0d39c5c6515fa11c0327664b79394d))
+
 ### [1.1.7](https://github.com/gergof/signo/compare/v1.1.6...v1.1.7) (2024-02-19)
 
 
