@@ -5,16 +5,22 @@ import TokenWrapper from '../TokenWrapper.js';
 
 abstract class SigningEngine {
 	protected token: TokenWrapper;
+	protected session: pkcs11.Session;
 	protected slot: Buffer;
 	protected logger: ChildLogger;
 
 	constructor(token: TokenWrapper, slot: string, logger: ChildLogger) {
 		this.token = token;
+		this.session = this.token.getSession();
 		this.slot = Buffer.from(
 			slot.padStart(slot.length + (slot.length % 2), '0'),
 			'hex'
 		);
 		this.logger = logger;
+	}
+
+	public close() {
+		this.session.close();
 	}
 
 	public abstract supportsStream(): boolean;
@@ -37,7 +43,7 @@ abstract class SigningEngine {
 	}
 
 	protected getPrivateKey(): pkcs11.PrivateKey {
-		const keys = this.token.getSession().find({
+		const keys = this.session.find({
 			class: pkcs11.ObjectClass.PRIVATE_KEY,
 			id: this.slot
 		});

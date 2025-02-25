@@ -6,7 +6,6 @@ class TokenWrapper {
 	public readonly tokenId: string;
 
 	private pin: string;
-	private session: pkcs11.Session | null;
 
 	constructor(slot: pkcs11.Slot) {
 		this.slot = slot;
@@ -16,7 +15,6 @@ class TokenWrapper {
 		}`;
 
 		this.pin = '';
-		this.session = null;
 	}
 
 	public isActivated() {
@@ -26,14 +24,10 @@ class TokenWrapper {
 	public activate(pin: string) {
 		this.pin = pin;
 
-		if (this.session) {
-			// close active session so the next one will be authorized
-			this.session.close();
-			this.session = null;
-		}
+		this.slot.closeAll();
 
 		try {
-			this.getSession();
+			this.getSession().close();
 		} catch (e) {
 			this.pin = '';
 			throw e;
@@ -41,30 +35,35 @@ class TokenWrapper {
 	}
 
 	public deactivate() {
-		this.session?.close();
-		this.session = null;
+		this.slot.closeAll();
 		this.pin = '';
 	}
 
 	public getSession() {
-		if (!this.session) {
-			this.session = this.slot.open();
-		}
+		const session = this.slot.open();
 
 		if (this.pin) {
 			try {
-				this.session.logout();
-			} catch {
-				// doing nothing
-			}
-			try {
-				this.session.login(this.pin, pkcs11.UserType.USER);
-			} catch {
-				// doing nothing
+				session.login(this.pin, pkcs11.UserType.USER);
+			} catch (e) {
+				// suppress already logged in error messages
+				if ((e as Error).message != 'CKR_USER_ALREADY_LOGGED_IN') {
+					throw e;
+				}
 			}
 		}
 
-		return this.session;
+		return session;
+	}
+
+	public withSession<T>(fn: (session: pkcs11.Session) => T): T {
+		const session = this.getSession();
+
+		const ret = fn(session);
+
+		Promise.resolve(ret).then(() => session.close());
+
+		return ret;
 	}
 
 	public getSigningMechanisms(): string[] {

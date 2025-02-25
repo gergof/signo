@@ -14,7 +14,7 @@ class PlainSigningEngine extends SigningEngine {
 		this.checkTokenActivated();
 
 		const key = this.getPrivateKey();
-		const sign = this.token.getSession().createSign(mechanism, key);
+		const sign = this.session.createSign(mechanism, key);
 		const signature = sign.once(content);
 
 		return signature;
@@ -27,7 +27,7 @@ class PlainSigningEngine extends SigningEngine {
 		this.checkTokenActivated();
 
 		const key = this.getPrivateKey();
-		const sign = this.token.getSession().createSign(mechanism, key);
+		const sign = this.session.createSign(mechanism, key);
 
 		return new Promise((resolve, reject) => {
 			stream.on('data', data => {

@@ -55,6 +55,8 @@ const ApiRoute: Route = async (fastify, ctx) => {
 
 				const signature = await sign.sign(file, engine.mechanism);
 
+				sign.close();
+
 				return resp
 					.send(signature)
 					.type('application/octet-stream')

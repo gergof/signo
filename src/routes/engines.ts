@@ -380,6 +380,8 @@ const EnginesRoute: Route = async (fastify, ctx) => {
 					? await sign.signStream(data.file, engine.mechanism)
 					: await sign.sign(await data.toBuffer(), engine.mechanism);
 
+				sign.close();
+
 				return resp
 					.header(
 						'content-disposition',
@@ -391,7 +393,9 @@ const EnginesRoute: Route = async (fastify, ctx) => {
 					.type('application/octet-stream')
 					.code(200);
 			} catch (e) {
-				ctx.logger.error('Failed to compute signature', { e });
+				ctx.logger.error('Failed to compute signature', {
+					e: e && e.toString ? e.toString() : e
+				});
 				return new httpErrors.InternalServerError(
 					'Failed to compute signature'
 				);

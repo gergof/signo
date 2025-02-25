@@ -111,7 +111,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 				intermediateCerts.map(cert => cert.value),
 			digest: dataIterator => {
 				this.logger.debug('Hashing data');
-				const digest = this.token.getSession().createDigest(digestAlgo);
+				const digest = this.session.createDigest(digestAlgo);
 
 				for (;;) {
 					const it = dataIterator.next();
@@ -127,7 +127,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 			},
 			sign: dataIterator => {
 				this.logger.debug('Signing data');
-				const sign = this.token.getSession().createSign(mechanism, key);
+				const sign = this.session.createSign(mechanism, key);
 
 				for (;;) {
 					const it = dataIterator.next();
@@ -205,7 +205,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 	}
 
 	private getCert(): pkcs11.X509Certificate {
-		const certs = this.token.getSession().find({
+		const certs = this.session.find({
 			class: pkcs11.ObjectClass.CERTIFICATE,
 			id: this.slot,
 			certType: pkcs11.CertificateType.X_509
@@ -231,7 +231,7 @@ class AuthenticodeSigningEngine extends SigningEngine {
 			return [];
 		}
 
-		const certs = this.token.getSession().find({
+		const certs = this.session.find({
 			class: pkcs11.ObjectClass.CERTIFICATE,
 			certType: pkcs11.CertificateType.X_509,
 			subject: cert.issuer

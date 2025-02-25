@@ -83,7 +83,7 @@ class Tokens {
 					module: mod.libName,
 					slot: slot.handle.toString('hex'),
 					serialNumber: slot.getToken().serialNumber,
-					description: slot.slotDescription
+					description: slot.getToken().label
 				});
 
 				this.tokens.set(token.tokenId, token);
