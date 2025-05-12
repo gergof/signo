@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/gergof/signo/compare/v1.2.0...v1.2.1) (2025-05-12)
+
+
+### Bug Fixes
+
+* **api:** Added more detailed errors when signature computation fails in the API ([bece098](https://github.com/gergof/signo/commit/bece0986c0b0508c5938da3f2d3afb4c2be60c06))
+
 ## [1.2.0](https://github.com/gergof/signo/compare/v1.1.7...v1.2.0) (2025-02-25)
 
 
