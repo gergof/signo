@@ -61,10 +61,14 @@ const ApiRoute: Route = async (fastify, ctx) => {
 					.send(signature)
 					.type('application/octet-stream')
 					.code(200);
-			} catch (e) {
-				ctx.logger.error('Failed to compute signature', { e });
+			} catch (e: any) {
+				ctx.logger.error('Failed to compute signature', {
+					e: e && e.toString ? e.toString() : e,
+					stack: e && e.stack ? e.stack : 'unknown'
+				});
 				return new httpErrors.InternalServerError(
-					'Failed to compute signature'
+					'Failed to compute signature. Reason: ' +
+						(e?.message || 'unknown')
 				);
 			}
 		}
