@@ -39,35 +39,6 @@ class AuthenticodeSigningEngine extends SigningEngine {
 		const digestAlgo = this.getDigestAlgorithm(mechanism as string);
 		const encryptionAlgo = this.getEncryptionAlgorithm(mechanism as string);
 
-		if (digestAlgo != 'SHA1') {
-			// executables should be double signed with SHA1
-			this.logger.debug(
-				`Double signing executable with SHA1 and ${digestAlgo}`
-			);
-			const sha1Signed = await this.createSignedExecutable(
-				content,
-				key,
-				cert,
-				intermediateCerts,
-				AuthenticodeSigningEngine.SHA1Mechanisms[encryptionAlgo],
-				'SHA1',
-				encryptionAlgo,
-				{ replace: true }
-			);
-			const signed = await this.createSignedExecutable(
-				sha1Signed,
-				key,
-				cert,
-				intermediateCerts,
-				mechanism,
-				digestAlgo,
-				encryptionAlgo,
-				{ nest: true }
-			);
-
-			return signed;
-		}
-
 		const signed = await this.createSignedExecutable(
 			content,
 			key,
