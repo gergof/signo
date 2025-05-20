@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/gergof/signo/compare/v1.2.1...v1.2.2) (2025-05-20)
+
+
+### Bug Fixes
+
+* **AuthenticodeSigningEngine:** Remove forced double signing since SHA1 is unsupported for most TSAs as of May 2025 ([bc82d48](https://github.com/gergof/signo/commit/bc82d483dece1df7e3dd2824a94da598ee6e72a8))
+
 ### [1.2.1](https://github.com/gergof/signo/compare/v1.2.0...v1.2.1) (2025-05-12)
 
 
